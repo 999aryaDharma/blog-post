@@ -15,10 +15,11 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {   
         $title = 'All Posts';
         $posts = auth()->user()->posts()->get();
+
         return view('posts', ['posts' => $posts])->with('title', $title);
     }
 

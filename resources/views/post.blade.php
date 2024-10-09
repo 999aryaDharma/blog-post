@@ -16,7 +16,7 @@
   </article> --}}
 
 
-<article class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white antialiased">
+<article class="pt-4 pb-16 lg:pt-8 lg:pb-24 bg-white antialiased">
   <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
     <article class="mx-auto w-full max-w-5xl format format-sm sm:format-base lg:format-lg format-blue">
         <header class="mb-4 lg:mb-6 not-format">
@@ -28,7 +28,7 @@
                         <a href="{{ '/authors/' . $post->author->username }}" rel="author" class="text-xl font-bold text-gray-900">{{ $post->author->name }}</a>
                         <p class="text-base text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                           @foreach ($post->categories as $category)
-                          <span class="bg-{{ $category->color }}-100 text-gray-500 text-xs inline-flex items-center rounded mb-1 -ml-0.5">
+                          <span class="bg-{{ $category->color }}-100 text-gray-500 text-xs inline-flex items-center rounded mb-1 mt-3 -ml-0.5 p-1">
                               <a href="/categories/{{ $category->slug }}" class="text-primary-800 ">
                                 {{ $category->name }} 
                                 @if (!$loop->last)
@@ -43,7 +43,7 @@
             </address>
             <h3 class="mb-4 text-xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl">{{ $post['title'] }}</h3>
         </header>          
-        <p>{{ ($post['body']) }}</p>
+        <p class="font-[Segoe UI]">{{ ($post['body']) }}</p>
     </article>
   </div>
 </article>

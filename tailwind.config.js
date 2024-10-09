@@ -21,7 +21,6 @@ export default {
                     "system-ui",
                     "Segoe UI",
                     "Roboto",
-                    "Helvetica Neue",
                     "Arial",
                     "Noto Sans",
                     "sans-serif",
@@ -30,6 +29,7 @@ export default {
                     "Segoe UI Symbol",
                     "Noto Color Emoji",
                 ],
+                headline: ['"Helvetica Neue"', "sans-serif"],
             },
             colors: {
                 primary: {

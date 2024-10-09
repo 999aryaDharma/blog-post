@@ -6,6 +6,7 @@
   @vite('resources/css/app.css', 'resources/js/app.js')
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <title>{{ $title }}</title>
 
   {{-- trix editor --}}
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
@@ -16,7 +17,6 @@
     }
   </style>
 
-  <title>Document</title>
 </head>
 <body class="h-full">
   <!--
