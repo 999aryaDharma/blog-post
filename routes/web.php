@@ -11,18 +11,17 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 Route::get('/', function () {
     $posts = Post::all();
 
-      // Batasi panjang body setiap post
+    // Batasi panjang body setiap post
     $posts = $posts->map(function ($post) {
         $post->body = Str::limit($post->body, 80);
         return $post;
     });
 
-    return view('posts', ['title' => 'All Posts', 'posts' => $posts]);
+    return view('posts', ['title' => 'All Posts', 'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->get()]);
 })->name('posts');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts/create', [PostController::class, 'store'])->name('posts.store');
