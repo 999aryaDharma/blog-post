@@ -31,11 +31,11 @@
                           <span class="bg-{{ $category->color }}-100 text-gray-500 text-xs inline-flex items-center rounded mb-1 mt-3 -ml-0.5 p-1">
                               <a href="/categories/{{ $category->slug }}" class="text-primary-800 ">
                                 {{ $category->name }} 
-                                @if (!$loop->last)
-                                    &nbsp;|&nbsp;
-                                @endif
                               </a>
                           </span>
+                          @if (!$loop->last)
+                            |&nbsp;
+                          @endif
                           @endforeach
                         </a>
                     </div>
@@ -43,7 +43,7 @@
             </address>
             <h3 class="mb-4 text-xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl">{{ $post['title'] }}</h3>
         </header>          
-        <p class="font-[Segoe UI]">{{ ($post['body']) }}</p>
+        <p class="font-[Segoe UI]">{!! ($post['body']) !!}</p>
     </article>
   </div>
 </article>

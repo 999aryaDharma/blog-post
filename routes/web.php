@@ -9,17 +9,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
-    $posts = Post::all();
+    // Mengambil post dengan filter yang diterapkan
+    $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
 
     // Batasi panjang body setiap post
     $posts = $posts->map(function ($post) {
-        $post->body = Str::limit($post->body, 80);
+        $post->body = Str::limit($post->body, 80); // Batasi panjang body
         return $post;
     });
 
-    return view('posts', ['title' => 'All Posts', 'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->get()]);
+    return view('posts', ['title' => 'All Posts', 'posts' => $posts]); // Mengembalikan post yang sudah dimodifikasi
 })->name('posts');
-
 
 Route::middleware(['auth'])->group(function () {
 

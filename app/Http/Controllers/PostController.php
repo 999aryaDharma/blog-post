@@ -53,16 +53,12 @@ class PostController extends Controller
         // Tambahkan ID penulis (user yang sedang login)
         $validatedData['author_id'] = auth()->user()->id;
 
-          // Hapus tag HTML dari data yang sudah divalidasi
-        $cleanContent = strip_tags($validatedData['body']);
-
-
         // Buat post baru dengan data yang divalidasi
         $post = Post::create([
             'title' => $validatedData['title'],
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
-            'body' =>  $cleanContent,
+            'body' =>  $validatedData['body'],
         ]);
         
         // Sinkronisasi kategori yang dipilih
@@ -115,12 +111,9 @@ class PostController extends Controller
         'categories' => 'required|array',
         ]);
 
-        // Hapus tag HTML dari data yang sudah divalidasi
-        $cleanContent = strip_tags($validatedData['body']);
-
         $post->update([
             'title' => $request->title,
-            'body' => $cleanContent,
+            'body' => $request->body,
             'categories' => $request->categories,
         ]);
 
