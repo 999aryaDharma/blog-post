@@ -2,9 +2,9 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg ring-1 ring-gray-200">
+    <form method="POST" action="{{ route('login') }}" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg ring-1 ring-gray-200">
         @csrf
-
+        
         <!-- Email Address -->
         <div class="mb-6">
             <x-input-label for="email" :value="__('Email')" />
@@ -46,4 +46,5 @@
             </x-primary-button>
         </div>
     </form>
+    
 </x-guest-layout>

@@ -44,6 +44,10 @@
             <h3 class="mb-4 text-xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl">{{ $post['title'] }}</h3>
         </header>          
         <p class="font-[Segoe UI]">{!! ($post['body']) !!}</p>
+        @foreach($post->images as $image)
+            <img src="{{ $image->image_url }}" alt="Post Image">
+        @endforeach
+
     </article>
   </div>
 </article>

@@ -33,6 +33,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/my-posts/{user:username}', [PostController::class, 'userPosts'])->name('my-posts');
 
+    Route::post('/upload-image', 'ImageController@upload')->name('upload.image');
+
+
 });
 
 Route::middleware(['auth'])->group(function () {

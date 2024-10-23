@@ -47,7 +47,8 @@ class PostController extends Controller
             'title' => 'required|max:255',
             'slug' => 'required|unique:posts,slug',
             'categories' => 'required|array',  // Pastikan categories sebagai array
-            'body' => 'required'
+            'body' => 'required',
+            'images' => 'array',
         ]);
 
         // Tambahkan ID penulis (user yang sedang login)
@@ -59,7 +60,15 @@ class PostController extends Controller
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
             'body' =>  $validatedData['body'],
+            'images' => $validatedData['images'],
         ]);
+
+        // Simpan setiap gambar ke dalam tabel post_images
+        if ($request->has('images')) {
+            foreach ($request->images as $image) {
+                $post->images()->create(['image_url' => $image]);
+            }
+        }
         
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);

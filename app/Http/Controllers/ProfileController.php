@@ -33,20 +33,25 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
 
-        // dd($request->all(), $request->file('profile_photo'));
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'profile_photo' => 'nullable|image|max:2048', // Validasi untuk file foto
-        ]);
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'profile_photo' => 'nullable|image|max:2048', // Validasi untuk file foto
+    ]);
 
         // Ambil user yang sedang login
         $user = auth()->user();
 
         // Cek apakah ada file yang di-upload
         if ($request->hasFile('profile_photo')) {
-            // Simpan file foto di folder 'profile_photos' di disk 'public'
-            $path = $request->file('profile_photo')->store('profile_photos', 'public');
-
+            // Ambil file
+            $file = $request->file('profile_photo');
+            
+            // Buat nama file dari username dan ekstensi asli
+            $filename = $user->username . '.' . $file->getClientOriginalExtension();
+            
+            // Simpan file di folder 'profile_photos' di disk 'public' dengan nama sesuai username
+            $path = $file->storeAs('profile_photos', $filename, 'public');
+            
             // Hapus foto lama jika ada
             if ($user->profile_photo) {
                 Storage::disk('public')->delete($user->profile_photo);
@@ -62,7 +67,8 @@ class ProfileController extends Controller
 
         // Redirect dengan pesan sukses
         return redirect()->back()->with('status', 'Profile updated successfully!');
-}
+
+    }
 
 
 

@@ -46,6 +46,17 @@
 
 </x-layout>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('trix-attachment-add', function(event) {
+            if (event.attachment.file) {
+                uploadImage(event.attachment);
+            }
+        });
+    });
+</script>
+
+
 
 <script>
     const title = document.querySelector('#title');
@@ -62,3 +73,40 @@
     })
 
 </script>
+
+<script>
+    document.addEventListener('trix-attachment-add', function(event) {
+        if (event.attachment.file) {
+            uploadImage(event.attachment);
+        }
+    });
+
+    function uploadImage(attachment) {
+        var form = new FormData();
+        form.append('file', attachment.file);
+
+        // Menampilkan preview sementara di editor
+        var temporaryUrl = URL.createObjectURL(attachment.file);
+        attachment.setAttributes({ preview: temporaryUrl });
+
+        fetch('{{ route('upload.image') }}', {
+            method: 'POST',
+            body: form,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        }).then(response => response.json())
+          .then(data => {
+              // Jika upload berhasil, update URL gambar
+              attachment.setAttributes({
+                  url: data.url,
+                  href: data.url
+              });
+          }).catch(error => {
+              console.error('Upload gagal:', error);
+          });
+    }
+</script>
+
+
+
