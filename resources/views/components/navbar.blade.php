@@ -1,86 +1,162 @@
-<nav class="bg-gray-800 fixed top-0 left-0 right-0 z-50" x-data="{ isOpen: false }">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative flex items-center justify-between h-16">
+<nav class="top-0 left-0 right-0 border-2 border-t-0 border-x-0 border-black bg-transparent z-50" x-data="{ isOpen: false }">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
             <!-- Logo (Left) -->
             <div class="flex items-center">
-                <div class="flex-shrink-0 md:h-8 md:w-8 h-6 w-6">
-                    <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+                <div class="flex-shrink-0">
+                    {{-- <img class="h-8 w-8" src="{{ asset('images/logo.svg') }}" alt="Your Company"> --}}
                 </div>
+                <p class="text-4xl font-bold font-[Noto]">Medium</p>
             </div>
 
             <!-- Desktop Navigation Links (Center) -->
-            <div class="hidden md:flex md:space-x-10">
-                <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-                <x-nav-link href="{{ Auth::check() ? route('my-posts', Auth::user()->username) : route('login') }}" 
-                    :active="request()->is('my-posts/' . (Auth::check() ? Auth::user()->username : ''))">My Blog</x-nav-link>
-                <x-nav-link href="/about" :active="request()->is('/about')">About</x-nav-link>
+            <div class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-8 text-black">
+                <x-nav-link href="{{ route('posts') }}" :active="request()->routeIs('home')"
+                    class="border border-transparent hover:border-black transition relative group">
+                    Home
+                    <span class="absolute left-0 -bottom-1 w-full h-1 bg-black transition-transform duration-300 transform scale-x-0 group-hover:scale-x-100"></span>
+                </x-nav-link>
+                <x-nav-link href="{{ route('my-posts', Auth::check() ? Auth::user()->username : '') }}" :active="request()->routeIs('blog')"
+                    class="border border-transparent hover:border-black transition relative group">
+                    Blog
+                    <span class="absolute left-0 -bottom-1 w-full h-1 bg-black transition-transform duration-300 transform scale-x-0 group-hover:scale-x-100"></span>
+                </x-nav-link>
+                <x-nav-link href="/about" :active="request()->routeIs('about')"
+                    class="border border-transparent hover:border-black transition relative group">
+                    About
+                    <span class="absolute left-0 -bottom-1 w-full h-1 bg-black transition-transform duration-300 transform scale-x-0 group-hover:scale-x-100"></span>
+                </x-nav-link>
             </div>
 
             <!-- Desktop User Menu (Right) -->
-            <div class="hidden md:flex md:items-center">
+            <div class="hidden md:flex md:items-center md:space-x-4">
                 @auth
-                <div class="relative">
-                    <button type="button" @click="isOpen = !isOpen" class="relative flex items-center text-white focus:outline-none">
-                        @if (auth()->user()->profile_photo)
-                            <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" alt="{{ auth()->user()->name }}" class="rounded-full w-11 h-11 bg-transparent object-fit">
-                        @endif
-                        <span class="ml-2">{{ Auth::user()->username }}</span>
-                    </button>
-                    <div x-show="isOpen"
-                        x-transition:enter="transition ease-out duration-100 transform"
-                        x-transition:enter-start="opacity-0 scale-95"
-                        x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75 transform"
-                        x-transition:leave-start="opacity-100 scale-100"
-                        x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
-                        <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700">Your Profile</a>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="block px-4 py-2 text-sm text-gray-700 w-full text-left">Sign out</button>
-                        </form>
+                    <div class="relative" x-data="{ isProfileOpen: false }">
+                        <button @click="isProfileOpen = !isProfileOpen"
+                            class="flex items-center">
+                            @if (auth()->user()->profile_photo)
+                                <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}"
+                                    alt="{{ auth()->user()->name }}" class="h-10 w-10 rounded-full object-cover">
+                            @endif
+                            <span class="ml-2 hover:underline">{{ auth()->user()->name }}</span>
+                        </button>
+
+                        <!-- Desktop Dropdown -->
+                        <div x-show="isProfileOpen" @click.away="isProfileOpen = false"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                            <a href="{{ route('profile.show') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Your Profile
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
+                                    Sign out
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
                 @else
-                <div class="flex space-x-4">
-                    <a href="{{ route('login') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                    <a href="{{ route('register') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
-                </div>
+                    <a href="{{ route('login') }}"
+                        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        Register
+                    </a>
                 @endauth
             </div>
 
             <!-- Mobile Menu Button -->
-            <div class="md:hidden">
-                <button type="button" @click="isOpen = !isOpen" class="p-2 text-gray-400 hover:text-white">
-                    <svg :class="{'block': !isOpen, 'hidden': isOpen }" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M3 12h18M3 19h18" />
+            <div class="flex md:hidden">
+                <button @click="isOpen = !isOpen" class="text-black hover:text-gray-600">
+                    <!-- Menu Icon -->
+                    <svg x-show="!isOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
-                    <svg :class="{'block': isOpen, 'hidden': !isOpen }" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    <!-- Close Icon -->
+                    <svg x-show="isOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Mobile Menu, show/hide based on menu state. -->
-    <div x-show="isOpen" class="md:hidden" @click.away="isOpen = false">
-        <div class="space-y-1 px-2 pt-2 pb-3">
-            <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-            <x-nav-link href="{{ route('my-posts', Auth::check() ? Auth::user()->username : '') }}" :active="request()->is('my-posts/' . (Auth::check() ? Auth::user()->username : ''))">My Blog</x-nav-link>
-            <x-nav-link href="/about" :active="request()->is('/about')">About</x-nav-link>
-            <x-nav-link href="/contact" :active="request()->is('/contact')">Contact</x-nav-link>
+    <!-- Mobile Sidebar -->
+    <div x-show="isOpen" 
+         x-transition:enter="transform transition-transform ease-in-out duration-300"
+         x-transition:enter-start="translate-x-full" 
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transform transition-transform ease-in-out duration-300"
+         x-transition:leave-start="translate-x-0" 
+         x-transition:leave-end="translate-x-full"
+         class="fixed inset-y-0 right-0 w-64 bg-white border border-black overflow-y-auto md:hidden z-50">
+
+        <!-- Mobile Menu Content -->
+        <div class="px-2 pt-10 pb-3 space-y-1">
+            <x-nav-link href="{{ route('posts') }}" 
+                        :active="request()->routeIs('home')"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-black border border-transparent hover:border-black transition hover:text-black">
+                Home
+            </x-nav-link>
+            <x-nav-link href="{{ route('my-posts', Auth::check() ? Auth::user()->username : '') }}" 
+                        :active="request()->routeIs('blog')"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-black border border-transparent hover:border-black transition hover:text-black">
+                Blog
+            </x-nav-link>
+            <x-nav-link href="/about" 
+                        :active="request()->routeIs('about')"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-black border border-transparent hover:border-black transition hover:text-black">
+                About
+            </x-nav-link>
+
             @auth
-            <a href="{{ route('profile.show') }}" class="block px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="block px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white w-full text-left">Sign out</button>
-            </form>
+                <div class="border-t border-gray-700 pt-4 mt-4">
+                    <div class="px-3 py-2 text-gray-400">
+                        {{ auth()->user()->name }}
+                    </div>
+                    <a href="{{ route('profile.show') }}"
+                       class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-white hover:bg-gray-700">
+                        Your Profile
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                                class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-black hover:text-white hover:bg-gray-700">
+                            Sign out
+                        </button>
+                    </form>
+                </div>
             @else
-            <a href="{{ route('login') }}" class="block px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Login</a>
-            <a href="{{ route('register') }}" class="block px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Register</a>
+                <div class="border-t border-gray-700 pt-4 mt-4">
+                    <a href="{{ route('login') }}"
+                       class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-white hover:bg-gray-700">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}"
+                       class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-white hover:bg-gray-700">
+                        Register
+                    </a>
+                </div>
             @endauth
         </div>
     </div>
+
+    <!-- Overlay -->
+    <div x-show="isOpen" @click="isOpen = false" class="fixed inset-0 bg-black bg-opacity-50 md:hidden z-40">
+    </div>
 </nav>
 
+<!-- Spacer to prevent content from hiding under fixed navbar -->
+<div class="h-4"></div>
