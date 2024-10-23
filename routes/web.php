@@ -3,23 +3,18 @@
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use App\Http\Middleware\SearchFilter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::get('/', function () {
-    // Mengambil post dengan filter yang diterapkan
-    $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
+Route::get('/', [PostController::class, 'index'])->name('posts');
 
-    // Batasi panjang body setiap post
-    $posts = $posts->map(function ($post) {
-        $post->body = Str::limit($post->body, 80); // Batasi panjang body
-        return $post;
-    });
+Route::get('/posts/{post:slug}', function (Post $post) {
+    return view('post', ['title' => $post->title, 'post' => $post]);
+});
 
-    return view('posts', ['title' => 'All Posts', 'posts' => $posts]); // Mengembalikan post yang sudah dimodifikasi
-})->name('posts');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -33,10 +28,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/my-posts/{user:username}', [PostController::class, 'userPosts'])->name('my-posts');
 
-    Route::post('/upload-image', 'ImageController@upload')->name('upload.image');
-
+    // Route::post('/upload-image', 'ImageController@upload')->name('upload.image');
+    Route::get('/posts/{title}', [PostController::class, 'show'])->name('posts.show');
 
 });
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'], ['title' => 'Profile'])->name('profile.show');
@@ -46,10 +42,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/posts/checkSlug', [PostController::class, 'checkSlug'])->name('posts.checkSlug')->middleware('auth');
-
-Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('post', ['title' => $post->title, 'post' => $post]);
-});
 
 Route::get('/categories/{category:slug}', function (Category $category) {
     // Batasi body untuk setiap postingan di dalam rute
@@ -63,7 +55,7 @@ Route::get('/categories/{category:slug}', function (Category $category) {
         'title' => 'Articles in: ' . $category->name,
         'posts' => $posts
     ]);
-});
+})->name('categories.show')->middleware('search.filter'); // Pindahkan middleware ke sini
 
 
 Route::get('/authors/{user:username}', function (User $user) {
@@ -72,6 +64,7 @@ Route::get('/authors/{user:username}', function (User $user) {
         // Batasi body untuk setiap postingan
         $post->body = Str::limit($post->body, 80, '...');
         return $post;
+
     });
     
     // Tampilkan view dengan data
@@ -79,5 +72,7 @@ Route::get('/authors/{user:username}', function (User $user) {
         'title' => 'Articles by: ' . $user->username,
         'posts' => $posts
     ]);
-});
+})->middleware('search.filter');
+
+
 require __DIR__.'/auth.php';

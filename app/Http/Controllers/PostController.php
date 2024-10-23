@@ -16,11 +16,17 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {   
-        $title = 'All Posts';
-        $posts = auth()->user()->posts()->get();
+    {
+        // Mengambil post dengan filter yang diterapkan
+        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
 
-        return view('posts', ['posts' => $posts])->with('title', $title);
+        // Batasi panjang body setiap post
+        $posts = $posts->map(function ($post) {
+            $post->body = Str::limit($post->body, 80); // Batasi panjang body
+            return $post;
+        });
+
+        return view('posts', ['title' => 'All Posts', 'posts' => $posts]); // Mengembalikan post yang sudah dimodifikasi
     }
 
     /**
@@ -48,7 +54,7 @@ class PostController extends Controller
             'slug' => 'required|unique:posts,slug',
             'categories' => 'required|array',  // Pastikan categories sebagai array
             'body' => 'required',
-            'images' => 'array',
+            // 'images' => 'array',
         ]);
 
         // Tambahkan ID penulis (user yang sedang login)
@@ -60,7 +66,7 @@ class PostController extends Controller
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
             'body' =>  $validatedData['body'],
-            'images' => $validatedData['images'],
+            // 'images' => $validatedData['images'],
         ]);
 
         // Simpan setiap gambar ke dalam tabel post_images
@@ -74,7 +80,6 @@ class PostController extends Controller
         $post->categories()->sync($validatedData['categories']);
 
         $posts = Post::where('author_id', auth()->id())->get();
-
 
         // Redirect dengan pesan sukses
         return redirect('/')->with('success', 'Post created successfully.');
@@ -129,7 +134,7 @@ class PostController extends Controller
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);
 
-        return redirect()->route('posts')->with('success', 'Post updated successfully.');
+        return back()->with('success', 'Post updated successfully.');
     }
 
     /**
@@ -142,7 +147,7 @@ class PostController extends Controller
         
         $post->delete();
 
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return back()->with('success', 'Post deleted successfully.');
     }
 
     public function checkSlug(Request $request)
@@ -154,7 +159,7 @@ class PostController extends Controller
     public function userPosts(User $user)
     {
         // Dapatkan semua post berdasarkan author_id dan batasi body di controller
-        $posts = Post::where('author_id', $user->id)->get()->map(function ($post) {
+        $posts = Post::where('author_id', $user->id)->latest()->get()->map(function ($post) {
             $post->body = Str::limit($post->body, 80, '...');
             return $post;
         });

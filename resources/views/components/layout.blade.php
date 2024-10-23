@@ -11,6 +11,12 @@
   {{-- trix editor --}}
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
   <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+
   {{-- <style>
     trix-toolbar [data-trix-button-group="file-tools"] {
       display: none;
@@ -19,24 +25,26 @@
 
 </head>
 <body class="h-full">
+  
   <!--
   This example requires updating your template:
 
   ```
   ```
 -->
-<div class="min-h-full">
-  <x-navbar></x-navbar>
+  <div class="min-h-full">
+    <x-navbar></x-navbar>
 
-  <x-header>{{ $title }}</x-header>
+    <x-header>{{ $title }}</x-header>
 
-  <main>
-    <div class="mx-auto max-w-full px-0 py-6">
-      {{ $slot }}
-    </div>
-  </main>
+    <main>
+      <div class="mx-auto max-w-full px-0 py-6">
+        {{ $slot }}
+      </div>
+    </main>
 
-</div>
+  </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 </html>
