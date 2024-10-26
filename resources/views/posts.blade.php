@@ -1,9 +1,12 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
 
+    
+
     @section('tittle', $title)
 
     <div class="py-2 px-4 mx-auto max-w-screen-xl lg:py-10">
+
         <!-- Updated grid with better mobile responsiveness -->
         <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             @forelse ($posts as $post)
@@ -56,7 +59,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
                         <a href="/posts/{{ $post['slug'] }}" class="group">
                             <h2
-                                class="text-xl sm:text-2xl font-bold tracking-tight group-hover:underline text-gray-900 dark:text-white">
+                                class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 {{ $post['title'] }}</h2>
                         </a>
                         <div class="flex items-center text-gray-400">
@@ -102,13 +105,33 @@
     </div>
 
     <!-- Floating action button with better mobile positioning -->
-    <a href="/posts/create"
+    @auth
+    <button><a href="/posts/create" 
         class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-[#373737] text-white rounded-full p-3 sm:p-4 shadow-lg hover:bg-[#272727] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-    </a>
+    </a></button>
+    @else
+    <button onclick="openModal('loginModal')" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-[#373737] text-white rounded-full p-3 sm:p-4 shadow-lg hover:bg-[#272727] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+    </a></button>
+    @endauth
+
+    
+    <x-modal name="loginModal">
+        @include('auth.login')
+    </x-modal>
+
+    <x-modal name="registerModal">
+        @include('auth.register')
+    </x-modal>
+
+    
 
     <!-- Toastr Notifications -->
     @if (Session::has('success'))
@@ -134,6 +157,13 @@
         </script>
     @endif
 </x-layout>
+
+<script>
+    function openModal(modalName) {
+        window.dispatchEvent(new CustomEvent('open-modal', { detail: modalName }));
+    }
+</script>
+
 
 <script>
     document.querySelectorAll('[id^=dropdownButton-]').forEach(button => {
