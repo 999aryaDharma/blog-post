@@ -1,13 +1,69 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
-
-    
-
     @section('tittle', $title)
 
-    <div class="py-2 px-4 mx-auto max-w-screen-xl lg:py-10">
+    <div class="py-2 mx-auto max-w-screen-xl lg:py-10">
 
-        <!-- Updated grid with better mobile responsiveness -->
+        {{-- Carousel (Featured Post) --}}
+        <div id="controls-carousel" class="relative w-full md:px-24 mb-20" data-carousel="static">
+            <!-- Carousel wrapper -->
+            <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                <!-- Item 1 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="/docs/images/carousel/carousel-1.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                </div>
+                <!-- Item 2 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                    <img src="/docs/images/carousel/carousel-2.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                </div>
+                <!-- Item 3 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="/docs/images/carousel/carousel-3.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                </div>
+                <!-- Item 4 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="/docs/images/carousel/carousel-4.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                </div>
+                <!-- Item 5 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="/docs/images/carousel/carousel-5.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                </div>
+            </div>
+            <!-- Slider controls -->
+            <button type="button"
+                class="absolute pl-20 ml-10 top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-prev>
+                <span
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 1 1 5l4 4" />
+                    </svg>
+                    <span class="sr-only">Previous</span>
+                </span>
+            </button>
+            <button type="button"
+                class="absolute pr-20 mr-10 top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-next>
+                <span
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 9 4-4-4-4" />
+                    </svg>
+                    <span class="sr-only">Next</span>
+                </span>
+            </button>
+        </div>
+
+        {{-- Latest Post (ambil 3) --}}
         <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             @forelse ($posts as $post)
                 <article
@@ -58,8 +114,7 @@
                     <!-- Post title and date with better spacing -->
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
                         <a href="/posts/{{ $post['slug'] }}" class="group">
-                            <h2
-                                class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 {{ $post['title'] }}</h2>
                         </a>
                         <div class="flex items-center text-gray-400">
@@ -96,33 +151,84 @@
                     <div
                         class="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 p-6 text-center">
                         <p class="font-semibold text-xl sm:text-2xl mb-4">Article not found!</p>
-                        <a href="/" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to all
+                        <a href="/" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to
+                            all
                             posts</a>
                     </div>
                 </div>
             @endforelse
         </div>
+
+        <!-- Bagian Post (Post Biasa) -->
+        <div class="flex flex-col md:flex-row px-8 py-4 md:p-16 lg:space-x-28">
+            <div class="flex-1 space-y-3">
+                <!-- Postingan 2 -->
+                <div class="border-b-[1px] border-gray-300 px-1.5 py-10 flex flex-col md:flex-row items-start w-full">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2">
+                            <img src="https://placehold.co/24x24" alt="Author Avatar" class="rounded-full" />
+                            <span class="text-primary font-thin text-sm">Michael Lim in Practice in Public</span>
+                        </div>
+                        <h2 class="text-2xl font-extrabold mt-4 font-body">If You Only Have 1 Hour A Day To Build A
+                            One-Person Business,
+                            Do This.</h2>
+                        <p class="text-muted-foreground mt-1.5 text-gray-500">Rather than make excuses, I’ve adapted to
+                            them.</p>
+                        <div class="flex space-x-4 items-center mt-4">
+                            <span class="text-muted">Jun 19</span>
+                            <span class="text-muted">7.6K 💬 179</span>
+                        </div>
+                    </div>
+                    <!-- Gambar Blog -->
+                    <div class="w-full md:w-1/5 h-40 md:h-auto flex-shrink-0 order-last md:order-none mt-8 md:mt-10">
+                        <img src="https://placehold.co/300x200" alt="Blog Image"
+                            class="w-full h-full object-cover shadow-md" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Widgets (hanya muncul di desktop) -->
+            <div class="hidden md:block w-1/4 space-y-6 pl-6">
+                <!-- Rekomendasi Topik -->
+                <div class=" px-3.5 py-2">
+                    <h3 class="text-lg font-semibold mb-4">Rekomendasi Topik</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- Badge dari Flowbite untuk kategori -->
+                        <span class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded-md">Personal
+                            (80)</span>
+                        <span class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded-md">Work
+                            (45)</span>
+                        <span class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded-md">Lifestyle
+                            (30)</span>
+                    </div>
+                </div>
+
+                <!-- Rekomendasi Penulis -->
+                <div class="border border-black px-3.5 py-2">
+                    <h3 class="text-lg font-semibold mb-2">Rekomendasi Penulis</h3>
+                    <ul class="text-muted-foreground space-y-2">
+                        <li>John Doe</li>
+                        <li>Jane Smith</li>
+                        <li>Michael Lim</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
     <!-- Floating action button with better mobile positioning -->
-    @auth
-    <button><a href="/posts/create" 
-        class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-[#373737] text-white rounded-full p-3 sm:p-4 shadow-lg hover:bg-[#272727] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
+    <!-- Button to create new post -->
+    <a href="{{ route('posts.create') }}"
+        class="fixed bottom-6 right-6 bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-    </a></button>
-    @else
-    <button onclick="openModal('loginModal')" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-[#373737] text-white rounded-full p-3 sm:p-4 shadow-lg hover:bg-[#272727] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-    </a></button>
-    @endauth
+    </a>
 
-    
+
     <x-modal name="loginModal">
         @include('auth.login')
     </x-modal>
@@ -130,37 +236,37 @@
     <x-modal name="registerModal">
         @include('auth.register')
     </x-modal>
-
-    
-
-    <!-- Toastr Notifications -->
-    @if (Session::has('success'))
-        <script>
-            $(document).ready(function() {
-                toastr.options = {
-                    "closeButton": true,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": true,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": true,
-                    "onclick": null,
-                    "showDuration": "5000",
-                    "hideDuration": "5000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "3000",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
-                toastr.success("{{ Session::get('success') }}");
-            });
-        </script>
-    @endif
 </x-layout>
+
+<!-- Toastr Notifications -->
+@if (Session::has('success'))
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "5000",
+                "hideDuration": "5000",
+                "timeOut": "5000",
+                "extendedTimeOut": "3000",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            toastr.success("{{ Session::get('success') }}");
+        });
+    </script>
+@endif
 
 <script>
     function openModal(modalName) {
-        window.dispatchEvent(new CustomEvent('open-modal', { detail: modalName }));
+        window.dispatchEvent(new CustomEvent('open-modal', {
+            detail: modalName
+        }));
     }
 </script>
 

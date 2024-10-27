@@ -133,4 +133,4 @@
 </nav>
 
 <!-- Spacer to prevent content from hiding under fixed navbar -->
-<div class="h-4"></div>
+<div class="h-2"></div>

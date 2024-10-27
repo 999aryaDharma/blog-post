@@ -15,11 +15,13 @@ Route::get('/posts/{post:slug}', function (Post $post) {
     return view('post', ['title' => $post->title, 'post' => $post]);
 });
 
+Route::get('checkSlug', [PostController::class, 'checkSlug']);
+
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('/posts/create', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/post/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/post/create', [PostController::class, 'store'])->name('posts.store');
 
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{post}/edit', [PostController::class, 'update'])->name('posts.update');
@@ -29,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-posts/{user:username}', [PostController::class, 'userPosts'])->name('my-posts');
 
     Route::get('/posts/{title}', [PostController::class, 'show'])->name('posts.show');
+
+    
 
 });
 
@@ -40,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
-Route::get('/posts/checkSlug', [PostController::class, 'checkSlug'])->name('posts.checkSlug')->middleware('auth');
+
 
 Route::get('/categories/{category:slug}', function (Category $category) {
     // Batasi body untuk setiap postingan di dalam rute

@@ -16,9 +16,19 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+    {   
+        // Mengambil 3 post dengan views terbanyak untuk most popular
+        // $mostPopularPosts = Post::orderBy('views', 'desc')->take(3)->get();
+
+        // Mengambil 3 post terbaru berdasarkan created_at
+        $latestPosts = Post::latest()->take(3)->get();
+
         // Mengambil post dengan filter yang diterapkan
-        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
+        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->take(3)->get();
+
+        // Mengambil semua post kecuali yang ada di most popular dan latest
+        // $excludedPostIds = $mostPopularPosts->pluck('id')->merge($latestPosts->pluck('id'));
+        // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
 
         // Batasi panjang body setiap post
         $posts = $posts->map(function ($post) {
@@ -34,12 +44,13 @@ class PostController extends Controller
      */
     public function create()
     {
+    
         $categories = Category::all();
         // Pass categories to the view
         
         return view('posts.form', [
             'categories' => $categories,
-            'title' => 'Create New Post'
+            'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post'
         ]);
     }
 
@@ -91,8 +102,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::with('categories')->find($id);
-        return view('posts', compact('post'));
+     
     }
 
     /**
@@ -108,7 +118,10 @@ class PostController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('posts.form', ['title' => 'Edit Post', 'categories' => $categories,])->with(compact('post'));
+        return view('posts.form', [
+            'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post',
+            'categories' => $categories,
+        ])->with(compact('post'));
 
     }
 
