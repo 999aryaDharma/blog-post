@@ -15,12 +15,12 @@
                     <span class="absolute left-0 -bottom-1 w-full h-1 bg-black transition-transform duration-300 transform scale-x-0 group-hover:scale-x-100"></span>
                 </x-nav-link>
                 @auth
-                    <x-nav-link href="{{ route('my-posts', Auth::user()->username) }}" :active="request()->is('my-posts/' . Auth::user()->username)" class="border border-transparent hover:border-black transition relative group">
+                    <x-nav-link onclick="openModal('loginModal')" href="{{ route('my-posts', Auth::user()->username) }}" :active="request()->is('my-posts/' . Auth::user()->username)" class="border border-transparent hover:border-black transition relative group">
                         My Blog
                         <span class="absolute left-0 -bottom-1 w-full h-1 bg-black transition-transform duration-300 transform scale-x-0 group-hover:scale-x-100"></span>
                     </x-nav-link>
                 @else
-                    <x-nav-link href="{{ route('login') }}" class="border border-transparent hover:border-black transition relative group">
+                    <x-nav-link onclick="openModal('loginModal')" class="border border-transparent hover:border-black transition relative group">
                         My Blog
                         <span class="absolute left-0 -bottom-1 w-full h-1 bg-black transition-transform duration-300 transform scale-x-0 group-hover:scale-x-100"></span>
                     </x-nav-link>
