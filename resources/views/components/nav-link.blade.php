@@ -3,7 +3,7 @@
 @php
 $classes = ($active ?? false)
     ? 'text-black'
-    : 'text-md text-black  py-1 px-1.5 rounded-sm relative inline-block text-gray-800 hover:text-black group';
+    : 'text-md text-black py-1 px-1.5 rounded-sm relative inline-block text-gray-800 hover:text-black group';
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes]) }}>

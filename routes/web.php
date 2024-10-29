@@ -75,7 +75,7 @@ Route::get('/authors/{user:username}', function (User $user) {
         'title' => 'Articles by: ' . $user->username,
         'posts' => $posts
     ]);
-})->middleware('search.filter');
+});
 
 
 require __DIR__.'/auth.php';

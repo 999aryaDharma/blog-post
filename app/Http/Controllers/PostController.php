@@ -17,6 +17,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {   
+        
         // Mengambil 3 post dengan views terbanyak untuk most popular
         // $mostPopularPosts = Post::orderBy('views', 'desc')->take(3)->get();
 
@@ -24,9 +25,9 @@ class PostController extends Controller
         $latestPosts = Post::latest()->take(3)->get();
 
         // Mengambil post dengan filter yang diterapkan
-        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->take(3)->get();
+        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
 
-        // Mengambil semua post kecuali yang ada di most popular dan latest
+        # Mengambil semua post kecuali yang ada di most popular dan latest
         // $excludedPostIds = $mostPopularPosts->pluck('id')->merge($latestPosts->pluck('id'));
         // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
 
@@ -36,7 +37,12 @@ class PostController extends Controller
             return $post;
         });
 
-        return view('posts', ['title' => 'All Posts', 'posts' => $posts]); // Mengembalikan post yang sudah dimodifikasi
+        $title = 'All Posts';
+        $users = User::all();
+        $categories = Category::all();
+
+        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts'));
+        
     }
 
     /**
@@ -44,7 +50,6 @@ class PostController extends Controller
      */
     public function create()
     {
-    
         $categories = Category::all();
         // Pass categories to the view
         
@@ -177,10 +182,16 @@ class PostController extends Controller
             return $post;
         });
 
+        $categories = Category::all();
+        $users = User::all();
+
         // Kirim data ke view
-        return view('posts', [
+        return view('user-posts', [
             'title' => $user->username . "'s Posts" ,
             'posts' => $posts,
+            'categories' => $categories,
+            'users' => $users
+
         ]);
     }
 

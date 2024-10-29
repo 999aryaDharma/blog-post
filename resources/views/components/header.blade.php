@@ -1,8 +1,8 @@
-<header class="bg-white shadow w-full">
+{{-- <header class="bg-white shadow w-full">
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="flex justify-between items-end">
             <!-- Judul di kiri -->
-            <h1 class="sm:text-center text-3xl font-bold tracking-tight text-gray-900 sm:mb-0">{{ $slot }}</h1>
+            <h1 class="sm:text-center text-2xl font-bold tracking-tight text-gray-900 sm:mb-0">{{ $slot }}</h1>
 
             <!-- Search Bar di kanan -->
             <div class="flex w-full max-w-screen-md">
@@ -32,4 +32,4 @@
             </div>
         </div>
     </div>
-</header>
+</header> --}}
