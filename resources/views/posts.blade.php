@@ -5,24 +5,24 @@
     <div class="py-2 mx-auto max-w-screen-xl lg:py-10 p-6">
 
         {{-- Carousel (Featured Post) --}}
-        <div id="controls-carousel" class="relative w-full md:px-24 mb-20" data-carousel="static">
-            <div class="absolute z-30 flex translate-x-1/2 font-semibold font-headline text-xl">Most Popular</div>
+        <div id="controls-carousel" class="relative w-full md:px-10 my-10" data-carousel="static">
+            <div class="absolute flex -translate-y-11 font-semibold font-headline text-xl">Most Popular</div>
             <!-- Carousel wrapper -->
             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                 <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img src="/docs/images/carousel/carousel-1.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                    <img src="/storage/profile_photos/aryaakk.jpg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 1">
                 </div>
                 <!-- Item 2 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                    <img src="/docs/images/carousel/carousel-2.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                    <img src="/storage/profile_photos/default.jpeg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 2">
                 </div>
                 <!-- Item 3 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
                     <img src="/docs/images/carousel/carousel-3.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 3">
                 </div>
                 <!-- Item 4 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
@@ -37,10 +37,10 @@
             </div>
             <!-- Slider controls -->
             <button type="button"
-                class="absolute pl-20 ml-10 top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                class="absolute pl-8 ml-5 top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                 data-carousel-prev>
                 <span
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                     <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -50,10 +50,10 @@
                 </span>
             </button>
             <button type="button"
-                class="absolute pr-20 mr-10 top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                class="absolute pr-8 mr-5 top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                 data-carousel-next>
                 <span
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                     <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -65,8 +65,9 @@
         </div>
 
         {{-- Latest Post (ambil 3) --}}
-        <div class="grid gap-8 grid-cols-1 px-4 py-4 sm:px-8 sm:py-8 mb-8 md:grid-cols-2 lg:grid-cols-3">
-            <div class="absolute z-30 flex translate-x- -translate-y-12 font-semibold font-headline text-xl">Latest Post
+        <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 mt-44 mb-32">
+            <div class="absolute z-30 flex translate-x- -translate-y-12 font-semibold font-headline text-xl">
+                Latest Post 
             </div>
             @forelse ($latestPosts as $post)
                 <article
@@ -115,21 +116,24 @@
                     </div>
 
                     <!-- Post title and date -->
-                    <div class="flex gap-2 mb-3">
+                    <div class="flex gap-2 mb-3 items-center">
                         <a href="/posts/{{ $post['slug'] }}" class="group">
-                            <h2 class="text-2xl font-body font-bold tracking-tight text-gray-900 dark:text-white">
-                                {{ $post['title'] }}</h2>
+                            <h2
+                                class="text-xl font-body font-semibold tracking-tight text-gray-900 dark:text-white line-clamp-2">
+                                {{ $post['title'] }}
+                            </h2>
                         </a>
-                        <div class="mt-1">|</div>
+                        <div class="hidden sm:block mt-1">|</div>
                         <div class="flex items-center text-gray-400 text-xs mt-1">
                             <p>{{ $post->created_at->format('d M Y') }}</p>
                         </div>
                     </div>
 
+
                     <p class="font-[Segoe UI] mb-5 font-light text-gray-500 dark:text-gray-400 line-clamp-4">
                         {{ $post->body }}</p>
 
-                    <!-- Author info and read more -->
+                    <!-- Author info -->
                     <div class="flex flex-col justify-between items-start mt-auto">
                         <a href="/authors/{{ $post->author->username }}" class="flex items-center space-x-3">
                             <img src="{{ Storage::url($post->author->profile_photo) }}"
@@ -151,13 +155,13 @@
         </div>
 
 
-
         <!-- Regular Post -->
-        <div class="flex flex-col md:flex-row px-6 py-4 md:px-16 md:py-20 lg:space-x-10 ">
-            <div class="flex-1 space-y-3 pr-6">
+        <div class="flex flex-col md:flex-row px-2 py-4 md:px-8 md:py-4 lg:space-x-8 ">
+            <div class="flex-1 space-y-3">
                 @foreach ($posts as $post)
                     <!-- Postingan -->
-                    <div class="border-b-[1px] border-gray-200 px-1.5 py-8 flex flex-col md:flex-row items-start w-full gap-x-6">
+                    <div
+                        class="border-b-[1px] border-gray-200 px-1.5 py-8 flex flex-col md:flex-row items-start w-full gap-x-6">
                         <!-- Wrapper untuk konten teks -->
                         <div class="flex-1">
                             <div class="flex items-center space-x-2">
@@ -169,8 +173,21 @@
                                 <span class="text-primary font-thin text-sm">{{ $post->author->name }}</span>
                             </div>
                             <a href="/posts/{{ $post['slug'] }}">
-                                <h2 class="text-2xl font-extrabold mt-4 font-body">{{ $post->title }}</h2>
+                                <h2 class="text-2xl font-extrabold mt-3 font-body line-clamp-4">{{ $post->title }}
+                                </h2>
                             </a>
+
+                            <!-- Categories -->
+                            <div class="flex flex-wrap gap-2 mb-4 mt-1">
+                                @foreach ($post->categories as $category)
+                                    <a href="/categories/{{ $category->slug }}" class="text-md">
+                                        <span
+                                            class="bg-{{ $category->color }}-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                                            {{ $category->name }}
+                                        </span>
+                                    </a>
+                                @endforeach
+                            </div>
                             <p class="text-gray-500 text-thin mt-1.5 flex-shrink-0">
                                 {{ strip_tags($post->body) }}</p>
                             <div class="flex space-x-4 items-center mt-4 text-xs text-gray-600">
@@ -179,7 +196,8 @@
                             </div>
                         </div>
                         <!-- Gambar Blog -->
-                        <div class="w-full md:w-1/4 h-40 md:h-auto flex-shrink-0 order-last md:order-none mt-8 md:mt-10 ">
+                        <div
+                            class="w-full md:w-1/4 h-40 md:h-auto flex-shrink-0 order-last md:order-none mt-8 md:mt-10 ">
                             <img src="https://placehold.co/300x200" alt="Blog Image"
                                 class="w-full h-full object-cover shadow-md" />
                         </div>
@@ -193,25 +211,27 @@
             <!-- Sidebar Widgets (hanya muncul di desktop) -->
             <div class="hidden md:block w-1/4 space-y-6 pl-6 h-[calc(100vh-64px)] sticky top-16">
                 <!-- Rekomendasi Topik -->
-                <div class=" px-3.5 py-2">
+                <div class=" px-3.5 py-2 mt-20">
                     <h3 class="text-lg font-semibold mb-4">Rekomendasi Topik</h3>
                     <div class="flex flex-wrap gap-2">
                         <!-- Badge dari Flowbite untuk kategori -->
                         @foreach ($categories as $category)
-                            <span
-                                class="px-4 py-2 text-xs rounded-3xl font-semibold text-primary-800 bg-{{ $category->color }}-100 rounded-md">
-                                {{ $category->name }}
+                            <a href="/categories/{{ $category->slug }}" class="text-md mt-2">
                                 <span
-                                    class="p-1 text-xs font-semibold text-primary-800 bg-{{ $category->color }}-100 rounded-md">
-                                    ({{ $category->posts->count() }})
+                                    class="px-4 py-2 text-xs rounded-3xl font-semibold text-primary-800 bg-{{ $category->color }}-100 rounded-md">
+                                    {{ $category->name }}
+                                    <span
+                                        class="p-1 text-xs font-semibold text-primary-800 bg-{{ $category->color }}-100 rounded-md">
+                                        ({{ $category->posts->count() }})
+                                    </span>
                                 </span>
-                            </span>
+                            </a>
                         @endforeach
                     </div>
                 </div>
 
                 <!-- Rekomendasi Penulis -->
-                <div class="border border-black p-5">
+                <div class=" p-5">
                     <h3 class="text-lg font-semibold mb-4">Rekomendasi Penulis</h3>
                     <ul class="text-muted-foreground space-y-5">
                         @foreach ($users as $user)

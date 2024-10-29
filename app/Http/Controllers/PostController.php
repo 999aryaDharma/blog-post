@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use App\Helpers\TextHelper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,20 +23,17 @@ class PostController extends Controller
         // $mostPopularPosts = Post::orderBy('views', 'desc')->take(3)->get();
 
         // Mengambil 3 post terbaru berdasarkan created_at
-        $latestPosts = Post::latest()->take(3)->get();
-
-        // Mengambil post dengan filter yang diterapkan
-        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
+        $latestPosts = TextHelper::limitBodyContent(Post::latest()->take(3)->get());
 
         # Mengambil semua post kecuali yang ada di most popular dan latest
         // $excludedPostIds = $mostPopularPosts->pluck('id')->merge($latestPosts->pluck('id'));
         // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
 
+        // Mengambil post dengan filter yang diterapkan
+        $posts = TextHelper::limitBodyContent(Post::filter(request(['search', 'category', 'author']))->inRandomOrder()->get());
+
         // Batasi panjang body setiap post
-        $posts = $posts->map(function ($post) {
-            $post->body = Str::limit($post->body, 80); // Batasi panjang body
-            return $post;
-        });
+        $posts = TextHelper::limitBodyContent($posts);
 
         $title = 'All Posts';
         $users = User::all();
@@ -177,10 +175,7 @@ class PostController extends Controller
     public function userPosts(User $user)
     {
         // Dapatkan semua post berdasarkan author_id dan batasi body di controller
-        $posts = Post::where('author_id', $user->id)->latest()->get()->map(function ($post) {
-            $post->body = Str::limit($post->body, 80, '...');
-            return $post;
-        });
+        $posts = TextHelper::limitBodyContent($user->posts);
 
         $categories = Category::all();
         $users = User::all();

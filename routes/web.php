@@ -3,6 +3,7 @@
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use App\Helpers\TextHelper;
 use App\Http\Middleware\SearchFilter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -48,27 +49,19 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/categories/{category:slug}', function (Category $category) {
     // Batasi body untuk setiap postingan di dalam rute
-    $posts = $category->posts->map(function ($post) {
-        $post->body = Str::limit($post->body, 80, '...');
-        return $post;
-    });
-
+    $posts = TextHelper::limitBodyContent($category->posts);
+    
     // Kirim data ke view
     return view('posts', [
         'title' => 'Articles in: ' . $category->name,
         'posts' => $posts
     ]);
-})->name('categories.show')->middleware('search.filter'); // Pindahkan middleware ke sini
+})->name('categories.show');
 
 
 Route::get('/authors/{user:username}', function (User $user) {
     // Dapatkan semua post berdasarkan author_id
-    $posts = Post::where('author_id', $user->id)->get()->map(function ($post) {
-        // Batasi body untuk setiap postingan
-        $post->body = Str::limit($post->body, 80, '...');
-        return $post;
-
-    });
+    $posts = TextHelper::limitBodyContent($user->posts);
     
     // Tampilkan view dengan data
     return view('posts', [

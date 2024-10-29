@@ -2,8 +2,8 @@
     <x-slot:title>{{ $title }}</x-slot:title>
 
 
-    <article class="pt-4 pb-16 px-3 lg:pt-8 lg:pb-24 bg-white antialiased">
-        <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
+    <article class="pt-8 pb-20 px-72 lg:pt-8 lg:pb-24 bg-white antialiased">
+        <div class="flex justify-between mx-auto max-w-screen-xl ">
             <article class="mx-auto w-full max-w-5xl format format-sm sm:format-base lg:format-lg format-blue">
                 <header class="mb-4 lg:mb-6 not-format">
                     <a href="/" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to all posts
@@ -15,10 +15,10 @@
                             <div class="ml-3">
                                 <a href="{{ '/authors/' . $post->author->username }}" rel="author"
                                     class="text-lg font-bold text-gray-900">{{ $post->author->name }}</a>
-                                <p class="text-base text-gray-500">{{ $post->created_at->format('d M Y') }}</p>
+
                                 @foreach ($post->categories as $category)
                                     <span
-                                        class="bg-{{ $category->color }}-100 text-gray-500 text-xs inline-flex items-center rounded mb-1 mt-1 -ml-0.5 p-1">
+                                        class="bg-{{ $category->color }}-100 text-gray-500 text-xs block items-center rounded mb-1 mt-1 -ml-0.5 py-1 px-2">
                                         <a href="/categories/{{ $category->slug }}" class="text-primary-800 ">
                                             {{ $category->name }}
                                         </a>
@@ -27,7 +27,7 @@
                                         |&nbsp;
                                     @endif
                                 @endforeach
-                                </a>
+                                <p class="text-base text-gray-500 inline-flex">{{ $post->created_at->format('d M Y') }}</p>
                             </div>
                         </div>
                     </address>
