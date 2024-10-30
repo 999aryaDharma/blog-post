@@ -116,22 +116,22 @@
                     </div>
 
                     <!-- Post title and date -->
-                    <div class="flex gap-2 mb-3 items-center">
+                    <div class=" gap-2 mb-3 items-center">
                         <a href="/posts/{{ $post['slug'] }}" class="group">
                             <h2
-                                class="text-xl font-body font-semibold tracking-tight text-gray-900 dark:text-white line-clamp-2">
+                                class="text-2xl font-body font-extrabold tracking-tight text-gray-900 dark:text-white line-clamp-2">
                                 {{ $post['title'] }}
                             </h2>
                         </a>
-                        <div class="hidden sm:block mt-1">|</div>
-                        <div class="flex items-center text-gray-400 text-xs mt-1">
-                            <p>{{ $post->created_at->format('d M Y') }}</p>
+                        {{-- <div class="hidden sm:block mt-1">|</div> --}}
+                        <div class="items-center text-gray-400 text-xs mt-1">
+                            <p>{{ $post->created_at->format('M d') }}</p>
                         </div>
                     </div>
 
 
                     <p class="font-[Segoe UI] mb-5 font-light text-gray-500 dark:text-gray-400 line-clamp-4">
-                        {!! $post->body !!}</p>
+                        {{ $post->excerpt }}</p>
 
                     <!-- Author info -->
                     <div class="flex flex-col justify-between items-start mt-auto">
@@ -173,7 +173,7 @@
                                 <span class="text-primary font-thin text-sm">{{ $post->author->name }}</span>
                             </div>
                             <a href="/posts/{{ $post['slug'] }}">
-                                <h2 class="text-2xl font-extrabold mt-3 font-body line-clamp-4">{{ $post->title }}
+                                <h2 class="text-2xl font-extrabold mt-3 font-body">{{ $post->title }}
                                 </h2>
                             </a>
 
@@ -189,7 +189,7 @@
                                 @endforeach
                             </div>
                             <p class="text-gray-500 text-thin mt-1.5 flex-shrink-0">
-                                {{ strip_tags($post->body) }}</p>
+                                {{ $post->excerpt }}</p>
                             <div class="flex space-x-4 items-center mt-4 text-xs text-gray-600">
                                 <span class="text-muted">{{ $post->created_at->format('M d ') }}</span>
                                 <span class="text-muted">7.6K 💬 179</span>
@@ -211,7 +211,7 @@
             <!-- Sidebar Widgets (hanya muncul di desktop) -->
             <div class="hidden md:block w-1/4 space-y-6 pl-6 h-[calc(100vh-64px)] sticky top-16">
                 <!-- Rekomendasi Topik -->
-                <div class=" px-3.5 py-2 mt-20">
+                <div class=" px-3.5 py-2 mt-12">
                     <h3 class="text-lg font-semibold mb-4">Rekomendasi Topik</h3>
                     <div class="flex flex-wrap gap-2">
                         <!-- Badge dari Flowbite untuk kategori -->

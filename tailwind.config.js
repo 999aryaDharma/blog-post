@@ -33,6 +33,9 @@ export default {
                     "Noto Color Emoji",
                 ],
                 headline: ['"Helvetica Neue"', "sans-serif"],
+                lora: ["Lora", "serif"],
+                nunito: ["Nunito Sans", "sans-serif"],
+                playfair: ["Playfair Display", "serif"],
             },
             colors: {
                 primary: {
@@ -52,10 +55,7 @@ export default {
         },
     },
 
-    plugins: [
-        require("flowbite/plugin", "@tailwindcss/line-clamp"),
-        forms,
-    ],
+    plugins: [require("flowbite/plugin", "@tailwindcss/line-clamp"), forms],
 
     safelist: [
         "bg-red-100",

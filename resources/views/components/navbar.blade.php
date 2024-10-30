@@ -5,7 +5,7 @@
             <!-- Logo (Left) -->
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <p class="text-4xl font-bold font-[Noto]"><a href="{{ route('posts') }}">Medium</a></p>
+                    <p class="text-4xl font-bold font-playfair"><a href="{{ route('posts') }}">Medium</a></p>
                 </div>
                 <!-- Search Bar di kanan -->
                 <div class="flex max-w-screen-md ml-3.5">
@@ -31,7 +31,7 @@
                                 </div>
                                 <input
                                     class="block pl-10 w-56 text-md h-10 text-gray-900 bg-gray-50 rounded-full border border-gray-100 focus:ring-gray-400 focus:border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-                                    autocomplete="off" placeholder="Search for article" type="search" id="search"
+                                    autocomplete="off" placeholder="Search" type="search" id="search"
                                     name="search" value="{{ request('search') }}">
                             </div>
                             {{-- <div>
