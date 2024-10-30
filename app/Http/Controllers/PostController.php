@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
-use App\Helpers\TextHelper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,17 +22,14 @@ class PostController extends Controller
         // $mostPopularPosts = Post::orderBy('views', 'desc')->take(3)->get();
 
         // Mengambil 3 post terbaru berdasarkan created_at
-        $latestPosts = TextHelper::limitBodyContent(Post::latest()->take(3)->get());
+        $latestPosts = Post::latest()->take(3)->get();
 
         # Mengambil semua post kecuali yang ada di most popular dan latest
         // $excludedPostIds = $mostPopularPosts->pluck('id')->merge($latestPosts->pluck('id'));
         // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
 
         // Mengambil post dengan filter yang diterapkan
-        $posts = TextHelper::limitBodyContent(Post::filter(request(['search', 'category', 'author']))->inRandomOrder()->get());
-
-        // Batasi panjang body setiap post
-        $posts = TextHelper::limitBodyContent($posts);
+        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
 
         $title = 'All Posts';
         $users = User::all();
@@ -64,7 +60,8 @@ class PostController extends Controller
     {
         // Validasi data yang diinput oleh pengguna
         $validatedData = $request->validate([
-            'title' => 'required|max:255',
+            'title' => 'required|max:150',
+            'excerpt' => 'required|max:100',
             'slug' => 'required|unique:posts,slug',
             'categories' => 'required|array',  // Pastikan categories sebagai array
             'body' => 'required',
@@ -77,6 +74,7 @@ class PostController extends Controller
         // Buat post baru dengan data yang divalidasi
         $post = Post::create([
             'title' => $validatedData['title'],
+            'excerpt' => $validatedData['excerpt'],
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
             'body' =>  $validatedData['body'],
@@ -137,14 +135,17 @@ class PostController extends Controller
 
         $validatedData = $request->validate([
         'title' => 'required|max:255',
-        'body' => 'required',
+        'excerpt' => 'required|max:255',
+        'slug' => 'required|unique:posts,slug',
         'categories' => 'required|array',
+        'body' => 'required',
         ]);
 
         $post->update([
             'title' => $request->title,
-            'body' => $request->body,
+            'excerpt' => $request->excerpt,
             'categories' => $request->categories,
+            'body' => $request->body,
         ]);
 
         // Sinkronisasi kategori yang dipilih
@@ -174,9 +175,6 @@ class PostController extends Controller
 
     public function userPosts(User $user)
     {
-        // Dapatkan semua post berdasarkan author_id dan batasi body di controller
-        $posts = TextHelper::limitBodyContent($user->posts);
-
         $categories = Category::all();
         $users = User::all();
 

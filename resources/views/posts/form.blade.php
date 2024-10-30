@@ -25,6 +25,14 @@
                     value="{{ old('slug', $post->slug ?? '') }}" required autocomplete="off" />
             </div>
 
+            {{-- Input Excerpt --}}
+            <div class="my-6 px-5">
+                <label for="slug" class="block text-sm font-medium text-gray-700">Excerpt</label>
+                <x-text-input type="text" id="excerpt" name="excerpt"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    value="{{ old('excerpt', $post->excerpt ?? '') }}" required autocomplete="off" />
+            </div>
+
             {{-- Input Categories --}}
             <!-- Button untuk mengaktifkan dropdown -->
             <div class="my-6 px-5">

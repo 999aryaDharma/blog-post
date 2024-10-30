@@ -3,7 +3,6 @@
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
-use App\Helpers\TextHelper;
 use App\Http\Middleware\SearchFilter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -47,10 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::get('/categories/{category:slug}', function (Category $category) {
-    // Batasi body untuk setiap postingan di dalam rute
-    $posts = TextHelper::limitBodyContent($category->posts);
-    
+Route::get('/categories/{category:slug}', function (Category $category) {    
     // Kirim data ke view
     return view('posts', [
         'title' => 'Articles in: ' . $category->name,
@@ -59,10 +55,7 @@ Route::get('/categories/{category:slug}', function (Category $category) {
 })->name('categories.show');
 
 
-Route::get('/authors/{user:username}', function (User $user) {
-    // Dapatkan semua post berdasarkan author_id
-    $posts = TextHelper::limitBodyContent($user->posts);
-    
+Route::get('/authors/{user:username}', function (User $user) {    
     // Tampilkan view dengan data
     return view('posts', [
         'title' => 'Articles by: ' . $user->username,
