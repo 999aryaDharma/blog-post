@@ -131,7 +131,7 @@
 
 
                     <p class="font-[Segoe UI] mb-5 font-light text-gray-500 dark:text-gray-400 line-clamp-4">
-                        {{ $post->body }}</p>
+                        {!! $post->body !!}</p>
 
                     <!-- Author info -->
                     <div class="flex flex-col justify-between items-start mt-auto">

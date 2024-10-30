@@ -6,6 +6,8 @@ export default {
     content: [
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
         "./storage/framework/views/*.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
         "./resources/views/**/*.blade.php",
         "./node_modules/flowbite/**/*.js",
     ],
@@ -52,10 +54,9 @@ export default {
 
     plugins: [
         require("flowbite/plugin", "@tailwindcss/line-clamp"),
-        forms
+        forms,
     ],
 
-    
     safelist: [
         "bg-red-100",
         "bg-green-100",
