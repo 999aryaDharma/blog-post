@@ -1,5 +1,17 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
+    <style>
+        .img-container {
+            width: 100%;
+            /* Atur sesuai kebutuhan */
+            max-width: 750px;
+            /* Atur lebar maksimum */
+            height: 200px;
+            /* Ganti dengan tinggi tetap yang Anda inginkan */
+            overflow: hidden;
+            /* Untuk menghindari overflow dari gambar */
+        }
+    </style>
 
     <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased">
         <div class="flex flex-col lg:flex-row justify-between mx-auto max-w-screen-xl">
@@ -54,13 +66,16 @@
 
                     <div
                         class="ml-2 sm:ml-4 lg:ml-11 max-w-full h-auto flex-shrink-0 order-last md:order-none mt-4 md:mt-10">
-                        <img src="https://placehold.co/300x200" alt="Blog Image"
-                            class="w-full md:w-[750px] h-48 sm:h-60 md:h-80 object-cover shadow-md" />
+                        @if ($post->thumbnail)
+                            <img src="{{ $post->thumbnailUrl }}" alt="Thumbnail of {{ $post->title }}"
+                                class="w-full md:w-[750px] h-48 sm:h-60 md:h-80 object-contain shadow-md" />
+                        @endif
                     </div>
                 </header>
 
                 <!-- Content Section -->
-                <div class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
+                <div
+                    class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
                     <p>{!! $post->body !!}</p>
                 </div>
 

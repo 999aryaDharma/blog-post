@@ -15,7 +15,7 @@ class Post extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['title', 'excerpt', 'author_id', 'slug', 'body'];
+    protected $fillable = ['title', 'excerpt', 'thumbnail', 'author_id', 'slug', 'body'];
     protected $with = ['author', 'categories'];
 
     public function author(): BelongsTo
@@ -66,6 +66,12 @@ class Post extends Model
     {
         return $this->hasMany(PostImage::class);
     }
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : null;
+    }
+
 
 
 }

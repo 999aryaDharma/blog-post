@@ -67,7 +67,7 @@
         {{-- Latest Post (ambil 3) --}}
         <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 mt-44 mb-32">
             <div class="absolute z-30 flex translate-x- -translate-y-12 font-semibold font-headline text-xl">
-                Latest Post 
+                Latest Post
             </div>
             @forelse ($latestPosts as $post)
                 <article
@@ -156,25 +156,22 @@
 
 
         <!-- Regular Post -->
-        <div class="flex flex-col md:flex-row px-2 py-4 md:px-8 md:py-4 lg:space-x-8 ">
-            <div class="flex-1 space-y-3">
+        <div class="flex flex-col md:flex-row px-2 py-4 md:px-8 md:py-4 lg:space-x-8">
+            <div class="flex-1 space-y-6">
                 @foreach ($posts as $post)
                     <!-- Postingan -->
-                    <div
-                        class="border-b-[1px] border-gray-200 px-1.5 py-8 flex flex-col md:flex-row items-start w-full gap-x-6">
+                    <div class="border-b border-gray-200 py-6 flex flex-col md:flex-row items-start gap-6">
                         <!-- Wrapper untuk konten teks -->
                         <div class="flex-1">
                             <div class="flex items-center space-x-2">
                                 <a href="/authors/{{ $post->author->username }}">
                                     <img src="{{ Storage::url($post->author->profile_photo) }}"
-                                        alt="{{ $post->author->name }}"
-                                        class="rounded-full w-6 h-6 sm:w-8 sm:h-8 object-cover" />
+                                        alt="{{ $post->author->name }}" class="rounded-full w-8 h-8 object-cover" />
                                 </a>
                                 <span class="text-primary font-thin text-sm">{{ $post->author->name }}</span>
                             </div>
                             <a href="/posts/{{ $post['slug'] }}">
-                                <h2 class="text-2xl font-extrabold mt-3 font-body">{{ $post->title }}
-                                </h2>
+                                <h2 class="text-2xl font-extrabold mt-3 font-body">{{ $post->title }}</h2>
                             </a>
 
                             <!-- Categories -->
@@ -182,43 +179,48 @@
                                 @foreach ($post->categories as $category)
                                     <a href="/categories/{{ $category->slug }}" class="text-md">
                                         <span
-                                            class="bg-{{ $category->color }}-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                                            class="bg-{{ $category->color }}-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
                                             {{ $category->name }}
                                         </span>
                                     </a>
                                 @endforeach
                             </div>
-                            <p class="text-gray-500 text-thin mt-1.5 flex-shrink-0">
-                                {{ $post->excerpt }}</p>
+
+                            <p class="text-gray-500 text-thin mt-1.5">{{ $post->excerpt }}</p>
                             <div class="flex space-x-4 items-center mt-4 text-xs text-gray-600">
-                                <span class="text-muted">{{ $post->created_at->format('M d ') }}</span>
+                                <span class="text-muted">{{ $post->created_at->format('M d') }}</span>
                                 <span class="text-muted">7.6K 💬 179</span>
                             </div>
                         </div>
+
                         <!-- Gambar Blog -->
-                        <div
-                            class="w-full md:w-1/4 h-40 md:h-auto flex-shrink-0 order-last md:order-none mt-8 md:mt-10 ">
-                            <img src="https://placehold.co/300x200" alt="Blog Image"
-                                class="w-full h-full object-cover shadow-md" />
+                        <div class="w-full md:w-1/3 h-48 flex-shrink-0 order-last md:order-none mt-4 md:mt-0">
+                            @if ($post->thumbnail)
+                                <img src="{{ $post->thumbnailUrl }}" alt="Thumbnail of {{ $post->title }}"
+                                    class="w-full h-full object-cover rounded-md" />
+                            @else
+                                <div class="bg-gray-200 w-full h-full flex items-center justify-center rounded-md">
+                                    <span class="text-gray-400">No Image</span>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @endforeach
             </div>
 
             <!-- Garis vertikal -->
-            <div class="relative hidden md:block border-r-[1px] bg-gray-100 -right-6"></div>
+            <div class="relative hidden md:block border-r border-gray-300"></div>
 
             <!-- Sidebar Widgets (hanya muncul di desktop) -->
-            <div class="hidden md:block w-1/4 space-y-6 pl-6 h-[calc(100vh-64px)] sticky top-16">
+            <div class="hidden md:block w-1/4 space-y-6 pl-6 sticky h-[calc(100vh-2rem)] top-16">
                 <!-- Rekomendasi Topik -->
-                <div class=" px-3.5 py-2 mt-12">
+                <div class="px-3.5 py-2 mt-12">
                     <h3 class="text-lg font-semibold mb-4">Rekomendasi Topik</h3>
                     <div class="flex flex-wrap gap-2">
-                        <!-- Badge dari Flowbite untuk kategori -->
                         @foreach ($categories as $category)
                             <a href="/categories/{{ $category->slug }}" class="text-md mt-2">
                                 <span
-                                    class="px-4 py-2 text-xs rounded-3xl font-semibold text-primary-800 bg-{{ $category->color }}-100 rounded-md">
+                                    class="px-4 py-2 text-xs rounded-3xl font-semibold text-primary-800 bg-{{ $category->color }}-100">
                                     {{ $category->name }}
                                     <span
                                         class="p-1 text-xs font-semibold text-primary-800 bg-{{ $category->color }}-100 rounded-md">
@@ -231,23 +233,23 @@
                 </div>
 
                 <!-- Rekomendasi Penulis -->
-                <div class=" p-5">
+                <div class="p-5">
                     <h3 class="text-lg font-semibold mb-4">Rekomendasi Penulis</h3>
                     <ul class="text-muted-foreground space-y-5">
                         @foreach ($users as $user)
                             <li class="flex items-center space-x-2">
                                 <a href="/authors/{{ $user->username }}" class="flex items-center">
                                     <img src="{{ Storage::url($user->profile_photo) }}" alt="{{ $user->name }}"
-                                        class="rounded-full w-4 h-4 sm:w-6 sm:h-6 object-cover">
+                                        class="rounded-full w-6 h-6 object-cover">
                                     <span class="ml-2">{{ $user->name }}</span>
                                 </a>
                             </li>
                         @endforeach
                     </ul>
                 </div>
-
             </div>
         </div>
+
 
 
     </div>

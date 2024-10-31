@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class PostController extends Controller
@@ -47,7 +48,7 @@ class PostController extends Controller
         $categories = Category::all();
         // Pass categories to the view
         
-        return view('posts.form', [
+        return view('posts.create', [
             'categories' => $categories,
             'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post'
         ]);
@@ -63,13 +64,28 @@ class PostController extends Controller
             'title' => 'required|max:150',
             'excerpt' => 'required|max:100',
             'slug' => 'required|unique:posts,slug',
-            'categories' => 'required|array',  // Pastikan categories sebagai array
+            'categories' => 'required|array', // Pastikan categories sebagai array
             'body' => 'required',
-            // 'images' => 'array',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Tambahkan ukuran maksimal
         ]);
 
         // Tambahkan ID penulis (user yang sedang login)
         $validatedData['author_id'] = auth()->user()->id;
+
+        // Simpan gambar thumbnail jika ada
+        if ($request->hasFile('thumbnail')) {
+            // Buat nama file berdasarkan judul post, dengan format yang aman
+            $titleSlug = Str::slug($validatedData['title']);
+            $extension = $request->file('thumbnail')->getClientOriginalExtension();
+            $thumbnailName = "{$titleSlug}.{$extension}";
+
+            // Simpan gambar dengan nama baru
+            $thumbnailPath = $request->file('thumbnail')->storeAs('images/thumbnails', $thumbnailName, 'public');
+            $validatedData['thumbnail'] = $thumbnailPath;
+        } else {
+            // Jika tidak ada gambar, set thumbnail ke null (atau bisa juga ke default image)
+            $validatedData['thumbnail'] = null; // Atau Anda bisa mengatur default path
+        }
 
         // Buat post baru dengan data yang divalidasi
         $post = Post::create([
@@ -77,26 +93,16 @@ class PostController extends Controller
             'excerpt' => $validatedData['excerpt'],
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
-            'body' =>  $validatedData['body'],
-            // 'images' => $validatedData['images'],
+            'body' => $validatedData['body'],
+            'thumbnail' => $validatedData['thumbnail'],
         ]);
-
-        // Simpan setiap gambar ke dalam tabel post_images
-        if ($request->has('images')) {
-            foreach ($request->images as $image) {
-                $post->images()->create(['image_url' => $image]);
-            }
-        }
         
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);
 
-        $posts = Post::where('author_id', auth()->id())->get();
-
         // Redirect dengan pesan sukses
         return redirect('/')->with('success', 'Post created successfully.');
     }
-
 
     /**
      * Display the specified resource.
@@ -119,7 +125,7 @@ class PostController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('posts.form', [
+        return view('posts.edit', [
             'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post',
             'categories' => $categories,
         ])->with(compact('post'));
@@ -129,30 +135,58 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        $post = Post::findOrFail($id);
-
+        // Validasi data yang diinput oleh pengguna
         $validatedData = $request->validate([
-        'title' => 'required|max:255',
-        'excerpt' => 'required|max:255',
-        'slug' => 'required|unique:posts,slug',
-        'categories' => 'required|array',
-        'body' => 'required',
+            'title' => 'required|max:150',
+            'excerpt' => 'required|max:100',
+            'slug' => 'required|unique:posts,slug,' . $post->id, // Update slug harus unik kecuali untuk post yang sedang diupdate
+            'categories' => 'required|array', // Pastikan categories sebagai array
+            'body' => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Tambahkan ukuran maksimal
         ]);
 
+        // Tambahkan ID penulis (user yang sedang login)
+        $validatedData['author_id'] = auth()->user()->id;
+
+        // Simpan gambar thumbnail baru jika ada
+        if ($request->hasFile('thumbnail')) {
+            // Buat nama file berdasarkan judul post, dengan format yang aman
+            $titleSlug = Str::slug($validatedData['title']);
+            $extension = $request->file('thumbnail')->getClientOriginalExtension();
+            $thumbnailName = "{$titleSlug}.{$extension}";
+
+            // Simpan gambar dengan nama baru
+            $thumbnailPath = $request->file('thumbnail')->storeAs('images/thumbnails', $thumbnailName, 'public');
+            $validatedData['thumbnail'] = $thumbnailPath;
+
+            // Hapus thumbnail lama jika ada
+            if ($post->thumbnail) {
+                Storage::disk('public')->delete($post->thumbnail);
+            }
+        } else {
+            // Jika tidak ada gambar baru, gunakan thumbnail lama
+            $validatedData['thumbnail'] = $post->thumbnail; // Pertahankan thumbnail lama
+        }
+
+        // Perbarui post dengan data yang divalidasi
         $post->update([
-            'title' => $request->title,
-            'excerpt' => $request->excerpt,
-            'categories' => $request->categories,
-            'body' => $request->body,
+            'title' => $validatedData['title'],
+            'excerpt' => $validatedData['excerpt'],
+            'slug' => $validatedData['slug'],
+            'author_id' => $validatedData['author_id'],
+            'body' => $validatedData['body'],
+            'thumbnail' => $validatedData['thumbnail'],
         ]);
-
+        
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);
 
-        return back()->with('success', 'Post updated successfully.');
+        // Redirect dengan pesan sukses
+        return redirect()->route('my-posts')->with('success', 'Post updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -175,6 +209,7 @@ class PostController extends Controller
 
     public function userPosts(User $user)
     {
+        $posts = Post::where('author_id', $user->id)->get();
         $categories = Category::all();
         $users = User::all();
 
