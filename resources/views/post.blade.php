@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
 
-    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-72 bg-white antialiased">
+    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased">
         <div class="flex flex-col lg:flex-row justify-between mx-auto max-w-screen-xl">
             <article class="w-full pr-2 sm:px-6 lg:px-8 mx-auto max-w-5xl format format-sm sm:format-base lg:format-lg">
                 <header class="mb-4 lg:mb-6 not-format">
@@ -15,9 +15,21 @@
                     <div class="pl-2 sm:pl-4 lg:pl-11">
                         <!-- Title Section -->
                         <h3
-                            class="text-3xl md:text-5xl font-nunito sm:text-4xl lg:text-5xl font-extrabold text-gray-900 lg:mb-6 mt-2 sm:mt-4 md:leading-[4rem] sm:leding-8 lg:leading-[3.5rem]">
+                            class="text-3xl md:text-5xl font-nunito sm:text-4xl lg:text-5xl font-bold text-black lg:mb-6 mt-2 sm:mt-4 md:leading-[4rem] sm:leding-8 lg:leading-[3.5rem]">
                             {{ $post['title'] }}
                         </h3>
+
+                        <!-- Category Section -->
+                        <div class="lg:mt-8 flex items-center flex-wrap gap-2">
+                            @foreach ($post->categories as $category)
+                                <span
+                                    class="bg-{{ $category->color }}-100 text-gray-500 text-xs rounded mb-1 py-1 px-2">
+                                    <a href="/categories/{{ $category->slug }}" class="text-primary-800">
+                                        {{ $category->name }}
+                                    </a>
+                                </span>
+                            @endforeach
+                        </div>
 
 
                         <!-- Author Section -->
@@ -35,18 +47,6 @@
                             </div>
                         </address>
 
-                        <!-- Category Section -->
-                        <div class="mt-4 lg:mt-8 flex items-center flex-wrap gap-2">
-                            @foreach ($post->categories as $category)
-                                <span
-                                    class="bg-{{ $category->color }}-100 text-gray-500 text-xs rounded mb-1 py-1 px-2">
-                                    <a href="/categories/{{ $category->slug }}" class="text-primary-800">
-                                        {{ $category->name }}
-                                    </a>
-                                </span>
-                            @endforeach
-                        </div>
-
                         {{-- Excerpt --}}
                         <p class="mt-6 text-xl font-serif flex-shrink-0">
                             {{ $post->excerpt }}</p>
@@ -60,9 +60,10 @@
                 </header>
 
                 <!-- Content Section -->
-                <p class="px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
-                    {{ $post->body }}
-                </p>
+                <div class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
+                    <p>{!! $post->body !!}</p>
+                </div>
+
             </article>
         </div>
     </article>

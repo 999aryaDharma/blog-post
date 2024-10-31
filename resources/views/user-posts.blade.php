@@ -3,10 +3,11 @@
     @section('tittle', $title)
 
     {{-- Latest Post (ambil 3) --}}
-    <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-10 py-4">
+    {{-- Latest Post (ambil 3) --}}
+    <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3">
         @forelse ($posts as $post)
             <article
-                class="flex flex-col justify-between p-4 sm:p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                class="flex flex-col justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 sm:p-6">
                 <div class="relative">
                     @if (Auth::check() && Auth::user()->id === $post->author_id && request()->is('my-posts/*'))
                         <div id="dropdownButton-{{ $post->id }}" class="mb-1 absolute right-0 -top-2">
@@ -51,36 +52,29 @@
                 </div>
 
                 <!-- Post title and date -->
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+                <div class=" gap-2 mb-3 items-center">
                     <a href="/posts/{{ $post['slug'] }}" class="group">
-                        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {{ $post['title'] }}</h2>
+                        <h2
+                            class="text-2xl font-body font-extrabold tracking-tight text-gray-900 dark:text-white line-clamp-2">
+                            {{ $post['title'] }}
+                        </h2>
                     </a>
-                    <div class="flex items-center text-gray-400">
-                        <span class="hidden sm:inline mx-2">|</span>
-                        <p class="text-xs">{{ $post->created_at->format('d M Y') }}</p>
+                    {{-- <div class="hidden sm:block mt-1">|</div> --}}
+                    <div class="items-center text-gray-400 text-xs mt-1">
+                        <p>{{ $post->created_at->format('M d') }}</p>
                     </div>
                 </div>
 
-                <p class="font-[Segoe UI] mb-5 font-light text-gray-500 dark:text-gray-400 line-clamp-4">
-                    {{ $post->body }}</p>
 
-                <!-- Author info and read more -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mt-auto">
+                <p class="font-[Segoe UI] mb-5 font-light text-gray-500 dark:text-gray-400 line-clamp-4">
+                    {{ $post->excerpt }}</p>
+
+                <!-- Author info -->
+                <div class="flex flex-col justify-between items-start mt-auto">
                     <a href="/authors/{{ $post->author->username }}" class="flex items-center space-x-3">
                         <img src="{{ Storage::url($post->author->profile_photo) }}" alt="{{ $post->author->name }}"
-                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover">
+                            class="w-8 h-8 rounded-full object-cover">
                         <span class="font-medium text-sm dark:text-white">{{ $post->author->name }}</span>
-                    </a>
-                    <a href="/posts/{{ $post['slug'] }}"
-                        class="inline-flex items-end font-medium text-blue-400 dark:text-primary-500 hover:underline text-sm">
-                        Read more
-                        <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
                     </a>
                 </div>
             </article>
@@ -90,8 +84,7 @@
                     class="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 p-6 text-center">
                     <p class="font-semibold text-xl sm:text-2xl mb-4">Article not found!</p>
                     <a href="/" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to
-                        all
-                        posts</a>
+                        all posts</a>
                 </div>
             </div>
         @endforelse

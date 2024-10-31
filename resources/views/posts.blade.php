@@ -168,7 +168,7 @@
                                 <a href="/authors/{{ $post->author->username }}">
                                     <img src="{{ Storage::url($post->author->profile_photo) }}"
                                         alt="{{ $post->author->name }}"
-                                        class="rounded-full w-8 h-8 sm:w-10 sm:h-10 object-cover" />
+                                        class="rounded-full w-6 h-6 sm:w-8 sm:h-8 object-cover" />
                                 </a>
                                 <span class="text-primary font-thin text-sm">{{ $post->author->name }}</span>
                             </div>
