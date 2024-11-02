@@ -33,10 +33,19 @@ class PostController extends Controller
         $posts = Post::filter(request(['search', 'category', 'author']))->latest()->take(10)->get();
 
         $title = 'All Posts';
-        $users = User::inRandomOrder()->take(3)->get();
-        $categories = Category::all();
 
-        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts'));
+        $users = User::inRandomOrder()->take(3)->get();
+
+        // Ambil semua kategori
+        $categories = Category::all()->shuffle();
+        
+        // Ambil hanya 4 kategori untuk ditampilkan di index
+        $visibleCategories = $categories->take(4);
+        
+        // Ambil sisa kategori yang tidak ditampilkan
+        $sisaCategories = $categories->slice(4);
+
+        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts', 'visibleCategories', 'sisaCategories'));
         
     }
 

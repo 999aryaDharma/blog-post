@@ -52,16 +52,10 @@ Route::get('/categories/{category:slug}', function (Category $category) {
         $query->where('slug', $category->slug);
     })->latest()->get();
 
-    // Ambil semua kategori dan pengguna
-    $categories = Category::all();
-    $users = User::all();
-
     // Kirim data ke view
     return view('posts', [
         'title' => 'Articles in: ' . $category->name,
         'posts' => $posts,
-        'categories' => $categories,
-        'users' => $users,
     ]);
 })->name('categories.show');
 
@@ -78,11 +72,6 @@ Route::get('/authors/{user:username}', function (User $user) {
     // dd($posts);
 
     // \DB::enableQueryLog(); // Mengaktifkan log query
-    // Ambil semua pos yang ditulis oleh penulis tersebut
-    // $posts = Post::where('author_id', $user->id)->get();
-    // Ambil kategori dan pengguna
-    $categories = Category::all();
-    $users = User::all();
 
     // Melihat query yang dijalankan di log
     // dd(\DB::getQueryLog());
@@ -91,8 +80,6 @@ Route::get('/authors/{user:username}', function (User $user) {
     return view('posts', [
         'title' => 'Articles by: ' . $user->username,
         'posts' => $posts,
-        'categories' => $categories,
-        'users' => $users,
     ]);
 });
 

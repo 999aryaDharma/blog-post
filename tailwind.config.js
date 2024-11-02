@@ -14,6 +14,9 @@ export default {
 
     theme: {
         extend: {
+            transitionDuration: {
+                200: "200ms",
+            },
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
                 body: [
