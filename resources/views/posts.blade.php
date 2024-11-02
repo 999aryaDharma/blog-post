@@ -295,13 +295,7 @@
     @endauth
 
 
-    <x-modal name="loginModal" :open="session('errors') ? true : false">
-        @include('auth.login')
-    </x-modal>
-
-    <x-modal name="registerModal" :open="session('errors') ? true : false">
-        @include('auth.register')
-    </x-modal>
+    
 </x-layout>
 
 <!-- Toastr Notifications -->
@@ -328,14 +322,7 @@
     </script>
 @endif
 
-<script>
-    function openModal(modalName, route) {
-        history.pushState(null, "", route);
-        window.dispatchEvent(new CustomEvent('open-modal', {
-            detail: modalName
-        }));
-    }
-</script>
+
 
 {{-- dropdwon category --}}
 <script>
