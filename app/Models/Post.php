@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Vote;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -70,6 +71,22 @@ class Post extends Model
     {
         return $this->thumbnail ? asset('storage/' . $this->thumbnail) : null;
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function upvotes()
+    {
+        return $this->votes()->where('vote', 'up')->count();
+    }
+
+    public function downvotes()
+    {
+        return $this->votes()->where('vote', 'down')->count();
+    }
+
 
 
 

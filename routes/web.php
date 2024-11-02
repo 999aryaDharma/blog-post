@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Middleware\SearchFilter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -31,7 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-posts/{user:username}', [PostController::class, 'userPosts'])->name('my-posts');
 
     Route::get('/posts/{title}', [PostController::class, 'show'])->name('posts.show');
-
+    
+    Route::post('/posts/{post}/vote', [VoteController::class, 'vote'])->name('posts.vote');
     
 
 });

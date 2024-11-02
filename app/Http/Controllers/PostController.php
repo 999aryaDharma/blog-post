@@ -20,7 +20,12 @@ class PostController extends Controller
     {   
         
         // Mengambil 3 post dengan views terbanyak untuk most popular
-        // $mostPopularPosts = Post::orderBy('views', 'desc')->take(3)->get();
+        $mostPopularPosts = Post::withCount(['votes as upvotes' => function ($query) {
+            $query->where('vote', 'up');
+        }])
+        ->orderByDesc('upvotes')
+        ->take(5)
+        ->get();
 
         // Mengambil 3 post terbaru berdasarkan created_at
         $latestPosts = Post::latest()->take(3)->get();
@@ -45,7 +50,7 @@ class PostController extends Controller
         // Ambil sisa kategori yang tidak ditampilkan
         $sisaCategories = $categories->slice(4);
 
-        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts', 'visibleCategories', 'sisaCategories'));
+        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts', 'visibleCategories', 'sisaCategories', 'mostPopularPosts'));
         
     }
 
