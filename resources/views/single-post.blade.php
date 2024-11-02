@@ -32,7 +32,7 @@
                         </h3>
 
                         <!-- Category Section -->
-                        <div class="lg:mt-8 flex items-center flex-wrap gap-2">
+                        <div class=" flex items-center flex-wrap gap-2">
                             @foreach ($post->categories as $category)
                                 <span
                                     class="bg-{{ $category->color }}-100 text-gray-500 text-xs rounded mb-1 py-1 px-2">

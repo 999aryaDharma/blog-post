@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 Route::get('/', [PostController::class, 'index'])->name('posts');
 
 Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('post', ['title' => $post->title, 'post' => $post]);
+    return view('single-post', ['title' => $post->title, 'post' => $post]);
 });
 
 Route::get('checkSlug', [PostController::class, 'checkSlug']);
@@ -46,20 +46,53 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::get('/categories/{category:slug}', function (Category $category) {    
+Route::get('/categories/{category:slug}', function (Category $category) {
+    // Ambil semua post yang terfilter berdasarkan kategori
+    $posts = Post::filter(request(['search']))->whereHas('categories', function ($query) use ($category) {
+        $query->where('slug', $category->slug);
+    })->latest()->get();
+
+    // Ambil semua kategori dan pengguna
+    $categories = Category::all();
+    $users = User::all();
+
     // Kirim data ke view
     return view('posts', [
         'title' => 'Articles in: ' . $category->name,
-        'posts' => $posts
+        'posts' => $posts,
+        'categories' => $categories,
+        'users' => $users,
     ]);
 })->name('categories.show');
 
 
-Route::get('/authors/{user:username}', function (User $user) {    
+Route::get('/authors/{user:username}', function (User $user) {
+    // Ambil semua post yang terfilter berdasarkan kategori
+    $posts = Post::filter(request(['search'])) // Menggunakan scope filter
+                ->whereHas('author', function ($query) use ($user) {
+                    $query->where('author_id', $user->id); // Pastikan kita memfilter berdasarkan ID penulis
+                })
+                ->latest() // Mengurutkan berdasarkan waktu terbaru
+                ->get();
+
+    // dd($posts);
+
+    // \DB::enableQueryLog(); // Mengaktifkan log query
+    // Ambil semua pos yang ditulis oleh penulis tersebut
+    // $posts = Post::where('author_id', $user->id)->get();
+    // Ambil kategori dan pengguna
+    $categories = Category::all();
+    $users = User::all();
+
+    // Melihat query yang dijalankan di log
+    // dd(\DB::getQueryLog());
+
     // Tampilkan view dengan data
     return view('posts', [
         'title' => 'Articles by: ' . $user->username,
-        'posts' => $posts
+        'posts' => $posts,
+        'categories' => $categories,
+        'users' => $users,
     ]);
 });
 

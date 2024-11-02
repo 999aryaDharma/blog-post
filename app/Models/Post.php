@@ -38,29 +38,28 @@ class Post extends Model
         ];
     }
 
-    public function scopeFilter(Builder $query, array $filters): void {
+    public function scopeFilter($query, array $filters)
+    {
+        // Filter berdasarkan pencarian judul
+        if (!empty($filters['search'])) {
+            $query->where('title', 'like', '%' . $filters['search'] . '%');
+        }
 
-        $query->when($filters['search'] ?? false, 
-            fn ($query, $search) =>
-            $query->where('title', 'like', '%' . $search . '%')
-        );
+        // Filter berdasarkan kategori
+        if (!empty($filters['category'])) {
+            $query->whereHas('categories', function ($query) use ($filters) {
+                $query->where('slug', $filters['category']);
+            });
+        }
 
-        $query->when($filters['category'] ?? false, 
-            fn ($query, $category) =>
-            $query->whereHas('categories', 
-                fn ($query) =>
-                $query->where('name', $category)
-            )
-        );
-
-        $query->when($filters['author'] ?? false, 
-            fn ($query, $author) =>
-            $query->whereHas('author', 
-                fn ($query) =>
-                $query->where('username', $author)
-            )
-        );
+        // Filter berdasarkan penulis
+        if (!empty($filters['author'])) {
+            $query->whereHas('author', function ($query) use ($filters) {
+                $query->where('username', $filters['author']);
+            });
+        }
     }
+
 
     public function images(): HasMany
     {

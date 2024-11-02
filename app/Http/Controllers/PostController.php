@@ -30,10 +30,10 @@ class PostController extends Controller
         // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
 
         // Mengambil post dengan filter yang diterapkan
-        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->get();
+        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->take(10)->get();
 
         $title = 'All Posts';
-        $users = User::all();
+        $users = User::inRandomOrder()->take(3)->get();
         $categories = Category::all();
 
         return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts'));
