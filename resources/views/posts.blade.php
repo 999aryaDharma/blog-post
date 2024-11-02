@@ -194,7 +194,7 @@
                         </div>
 
                         <!-- Gambar Blog -->
-                        <div class="w-full md:w-1/3 h-48 flex-shrink-0 order-last md:order-none mt-4 md:mt-0">
+                        <div class="w-full md:w-1/4 h-32 flex-shrink-0 order-last md:order-none md:mt-0">
                             @if ($post->thumbnail)
                                 <img src="{{ $post->thumbnailUrl }}" alt="Thumbnail of {{ $post->title }}"
                                     class="w-full h-full object-cover rounded-md" />
@@ -209,7 +209,7 @@
             </div>
 
             <!-- Garis vertikal -->
-            <div class="relative hidden md:block border-r border-gray-300"></div>
+            <div class="relative hidden md:block border-r-[1px] border-gray-300 -right-10"></div>
 
             <!-- Sidebar Widgets (hanya muncul di desktop) -->
             <div class="hidden md:block w-1/4 space-y-6 pl-6 sticky h-[calc(100vh-2rem)] top-16">
@@ -274,11 +274,11 @@
     @endauth
 
 
-    <x-modal name="loginModal">
+    <x-modal name="loginModal" :open="session('errors') ? true : false">
         @include('auth.login')
     </x-modal>
 
-    <x-modal name="registerModal">
+    <x-modal name="registerModal" :open="session('errors') ? true : false">
         @include('auth.register')
     </x-modal>
 </x-layout>
@@ -308,7 +308,8 @@
 @endif
 
 <script>
-    function openModal(modalName) {
+    function openModal(modalName, route) {
+        history.pushState(null, "", route);
         window.dispatchEvent(new CustomEvent('open-modal', {
             detail: modalName
         }));

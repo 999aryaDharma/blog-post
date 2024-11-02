@@ -100,8 +100,8 @@
                         </div>
                     </div>
                 @else
-                    <x-primary-button onclick="openModal('loginModal')">Login</x-primary-button>
-                    <x-primary-button onclick="openModal('registerModal')">Register</x-primary-button>
+                    <x-primary-button onclick="openModal('loginModal', '/login')">Login</x-primary-button>
+                    <x-primary-button onclick="openModal('registerModal', '/register')">Register</x-primary-button>
                 @endauth
             </div>
 
