@@ -61,16 +61,16 @@
                     </svg>
                     <span class="sr-only">Next</span>
                 </span>
-            
+
             </button>
         </div>
 
         {{-- Latest Post (ambil 3) --}}
         @isset($latestPosts)
-        <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 mt-44 mb-32">
-            <div class="absolute z-30 flex translate-x- -translate-y-12 font-semibold font-headline text-xl">
-                Latest Post
-            </div>
+            <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 mt-44 mb-32">
+                <div class="absolute z-30 flex translate-x- -translate-y-12 font-semibold font-headline text-xl">
+                    Latest Post
+                </div>
                 @forelse ($latestPosts as $post)
                     <article
                         class="flex flex-col justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 sm:p-6">
@@ -212,7 +212,7 @@
             </div>
 
             <!-- Garis vertikal -->
-            <div class="relative hidden md:block border-r-[1px] border-gray-300 -right-10"></div>
+            <div class="relative hidden md:block border-r-[1px] border-gray-100 -right-10"></div>
 
             <!-- Sidebar Widgets (hanya muncul di desktop) -->
             <div class="hidden md:block w-1/4 space-y-6 pl-6 sticky h-[calc(100vh-6rem)] top-1">
@@ -220,7 +220,8 @@
                 <div class="px-3.5 py-2 mt-12">
                     <h3 class="text-lg font-semibold mb-4">Rekomendasi Topik</h3>
                     <div class="flex flex-wrap gap-2">
-                        @foreach ($categories as $category)
+                        <!-- Menampilkan kategori yang terlihat -->
+                        @foreach ($visibleCategories as $category)
                             <a href="/categories/{{ $category->slug }}" class="text-md mt-2">
                                 <span
                                     class="px-4 py-2 text-xs rounded-3xl font-semibold text-primary-800 bg-{{ $category->color }}-100">
@@ -232,8 +233,28 @@
                                 </span>
                             </a>
                         @endforeach
+                    
                     </div>
-                </div>
+                        <!-- Accordion untuk kategori yang tidak terlihat -->
+                        <div class="mt-6 relative">
+                            <!-- Tombol Accordion -->
+                            <button id="accordionButton"
+                                class="rounded-md px-2 py-2 text-sm font-medium text-gray-800">
+                                See more topics
+                            </button>
+
+                            <!-- Konten Accordion -->
+                            <div id="accordionContent"
+                                class="hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0">
+                                @foreach ($sisaCategories as $category)
+                                    <a href="/categories/{{ $category->slug }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        {{ $category->name }} ({{ $category->posts->count() }})
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
 
                 <!-- Rekomendasi Penulis -->
                 <div class="p-5">
@@ -252,9 +273,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 
     <!-- Floating action button with better mobile positioning -->
@@ -317,4 +335,42 @@
             detail: modalName
         }));
     }
+</script>
+
+{{-- dropdwon category --}}
+<script>
+    // Ambil elemen tombol dan konten accordion
+    const accordionButton = document.getElementById('accordionButton');
+    const accordionContent = document.getElementById('accordionContent');
+
+    // Fungsi untuk toggle konten
+    function toggleAccordion() {
+        const isHidden = accordionContent.classList.contains('hidden');
+        if (isHidden) {
+            accordionContent.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                accordionContent.classList.add('max-h-screen', 'opacity-100', 'scale-100');
+                accordionContent.classList.remove('max-h-0', 'opacity-0', 'scale-95');
+            });
+        } else {
+            accordionContent.classList.add('max-h-0', 'opacity-0', 'scale-95');
+            accordionContent.classList.remove('max-h-screen', 'opacity-100', 'scale-100');
+            setTimeout(() => {
+                accordionContent.classList.add('hidden');
+            }, 200); // Waktu sesuai dengan duration di Tailwind (300ms)
+        }
+    }
+
+    // Event listener untuk tombol
+    accordionButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Mencegah event bubble saat klik pada tombol
+        toggleAccordion();
+    });
+
+    // Menutup accordion jika mengklik di luar elemen
+    document.addEventListener('click', (event) => {
+        if (!accordionContent.classList.contains('hidden') && !accordionButton.contains(event.target)) {
+            toggleAccordion();
+        }
+    });
 </script>
