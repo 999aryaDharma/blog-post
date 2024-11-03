@@ -192,12 +192,15 @@
                             <p class="text-gray-500 text-thin mt-1.5">{{ $post->excerpt }}</p>
                             <div class="flex space-x-4 items-center mt-4 text-xs text-gray-600">
                                 <span class="text-muted">{{ $post->created_at->format('M d') }}</span>
-                                <span class="text-muted">7.6K 💬 179</span>
+                                <span class="text-muted mx-2">{{ $post->upvotes() }} 👍 
+                                    <span class="text-muted">💬179</span>
+                                </span>
+                                
                             </div>
                         </div>
 
                         <!-- Gambar Blog -->
-                        <div class="w-full md:w-1/4 h-32 flex-shrink-0 order-last md:order-none md:mt-0">
+                        <div class="w-full md:w-1/4 h-32 flex-shrink-0 order-last md:order-none md:mt-0 lg:mt-10">
                             @if ($post->thumbnail)
                                 <img src="{{ $post->thumbnailUrl }}" alt="Thumbnail of {{ $post->title }}"
                                     class="w-full h-full object-cover rounded-md" />

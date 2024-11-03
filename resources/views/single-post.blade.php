@@ -121,6 +121,9 @@
                 <div
                     class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
                     <p>{!! $post->body !!}</p>
+                    <img src="http://localhost/storage/images/content/DxiGJHitp49eOyDKFVj61JTfZogumuDdWX3U1lcT.jpg" width="1600" height="1104">
+
+
                 </div>
 
             </article>

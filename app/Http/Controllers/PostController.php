@@ -73,6 +73,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->all();
+        
         // Validasi data yang diinput oleh pengguna
         $validatedData = $request->validate([
             'title' => 'required|max:150',
