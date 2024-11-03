@@ -7,7 +7,7 @@
                 <div class="flex-shrink-0">
                     <p class="text-4xl font-bold font-playfair"><a href="{{ route('posts') }}">Medium</a></p>
                 </div>
-                <!-- Search Bar di kanan -->
+                <!-- Search Bar di kiri -->
                 <div class="flex max-w-screen-md ml-3.5">
                     <form action="{{ url()->current() }}" class="flex w-full justify-end">
                         @if (request('category'))
@@ -34,10 +34,6 @@
                                     autocomplete="off" placeholder="Search" type="search" id="search"
                                     name="search" value="{{ request('search') }}">
                             </div>
-                            {{-- <div>
-                                <button type="submit"
-                                    class="py-3 px-5 w-full text-sm font-medium text-center text-white rounded-lg border cursor-pointer bg-gray-700 border-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Search</button>
-                            </div> --}}
                         </div>
                     </form>
                 </div>
@@ -179,5 +175,4 @@
     <div x-show="isOpen" @click="isOpen = false" class="fixed inset-0 bg-black bg-opacity-50 md:hidden z-40"></div>
 </nav>
 
-<!-- Spacer to prevent content from hiding under fixed navbar -->
-<div class="h-2"></div>
+

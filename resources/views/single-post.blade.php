@@ -7,18 +7,6 @@
             max-width: 100%;
             /* Agar tidak melebihi 90% dari lebar tampilan */
         }
-
-        .img-container {
-            width: 100%;
-            /* Atur sesuai kebutuhan */
-            max-width: 750px;
-            /* Atur lebar maksimum */
-            height: 200px;
-            /* Ganti dengan tinggi tetap yang Anda inginkan */
-            overflow: hidden;
-            /* Untuk menghindari overflow dari gambar */
-        }
-
         .toast-error {
             background-color: #dc3545;
             /* Merah */
@@ -28,7 +16,7 @@
     </style>
     </style>
 
-    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased">
+    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased selection:bg-lime-300 selection:text-black">
         <div class="flex flex-col lg:flex-row justify-between mx-auto max-w-screen-xl">
             <article class="w-full pr-2 sm:px-6 lg:px-8 mx-auto max-w-5xl format format-sm sm:format-base lg:format-lg">
                 <header class="mb-4 lg:mb-6 not-format">
@@ -79,7 +67,7 @@
                             <button id="upvote-{{ $post->id }}" class="flex items-center p-2 hover:text-black"
                                 onclick="submitVote({{ $post->id }}, 'up')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#5C5C5C"
-                                    viewBox="0 0 256 256" class="hover:fill-black text-gray-100 hover:shadow-xl">
+                                    viewBox="0 0 256 256" class="hover:fill-black active:fill-black text-gray-100 hover:shadow-xl">
                                     <path
                                         d="M231,82.76A20,20,0,0,0,216,76H156V56a36,36,0,0,0-36-36,4,4,0,0,0-3.58,2.21L77.53,100H32a12,12,0,0,0-12,12v88a12,12,0,0,0,12,12H204a20,20,0,0,0,19.85-17.52l12-96A20,20,0,0,0,231,82.76ZM76,204H32a4,4,0,0,1-4-4V112a4,4,0,0,1,4-4H76ZM227.91,97.49l-12,96A12,12,0,0,1,204,204H84V104.94L122.42,28.1A28,28,0,0,1,148,56V80a4,4,0,0,0,4,4h64a12,12,0,0,1,11.91,13.49Z">
                                     </path>
@@ -119,7 +107,7 @@
 
                 <!-- Content Section -->
                 <div
-                    class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
+                    class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-800 leading-10 ">
                     <p>{!! $post->body !!}</p>
                 </div>
 
@@ -180,3 +168,5 @@
             });
     }
 </script>
+
+

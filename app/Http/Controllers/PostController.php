@@ -35,7 +35,7 @@ class PostController extends Controller
         // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
 
         // Mengambil post dengan filter yang diterapkan
-        $posts = Post::filter(request(['search', 'category', 'author']))->latest()->take(10)->get();
+        $posts = Post::filter(request(['search', 'category', 'author']))->with('votes')->latest()->take(10)->get();
 
         $title = 'All Posts';
 

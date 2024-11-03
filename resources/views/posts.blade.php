@@ -2,21 +2,38 @@
     <x-slot:title>{{ $title }}</x-slot:title>
     @section('tittle', $title)
 
-    <div class="py-2 mx-auto max-w-screen-xl lg:py-10 p-6">
+    {{-- searching for --}}
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-14">
+        @if (request('search'))
+            <div class=" border border-blue-200 text-gray-600 rounded-lg p-4 flex items-center space-x-2 mt-4 shadow-md">
+                <!-- Icon Search -->
+                <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <path
+                        d="M21 21l-4.35-4.35a7.5 7.5 0 10-1.06 1.06L21 21zM10.5 17a6.5 6.5 0 110-13 6.5 6.5 0 010 13z" />
+                </svg>
+                <!-- Text -->
+                <p class="text-lg font-semibold">Searching for "<span class="font-bold">{{ request('search') }}</span>"
+                </p>
+            </div>
+        @endif
+    </div>
 
+
+    <div class="py-2 mx-auto max-w-screen-xl lg:py-10 p-6">
         {{-- Carousel (Featured Post) --}}
-        <div id="controls-carousel" class="relative w-full md:px-10 my-10" data-carousel="static">
+        <div id="controls-carousel" class="relative w-full md:px-10 my-14" data-carousel="static">
             <div class="absolute flex -translate-y-11 font-semibold font-headline text-xl">Most Popular</div>
             <!-- Carousel wrapper -->
             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                 <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img src="/storage/profile_photos/aryaakk.jpg"
+                    <img src="/storage/profile_photos/default.jpeg"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 1">
                 </div>
                 <!-- Item 2 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                    <img src="/storage/profile_photos/default.jpeg"
+                    <img src="/storage/profile_photos/aryaakk.jpg"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 2">
                 </div>
                 <!-- Item 3 -->
@@ -40,7 +57,7 @@
                 class="absolute pl-8 ml-5 top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                 data-carousel-prev>
                 <span
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    class="inline-flex items-center justify-center w-12 h-12 rounded-full  dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60  dark:group-focus:ring-gray-800/70">
                     <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -53,7 +70,7 @@
                 class="absolute pr-8 mr-5 top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                 data-carousel-next>
                 <span
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    class="inline-flex items-center justify-center w-14 h-14 rounded-full  dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60  dark:group-focus:ring-gray-800/70 ">
                     <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -67,7 +84,7 @@
 
         {{-- Latest Post (ambil 3) --}}
         @isset($latestPosts)
-            <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 mt-44 mb-32">
+            <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 mt-48 mb-44">
                 <div class="absolute z-30 flex translate-x- -translate-y-12 font-semibold font-headline text-xl">
                     Latest Post
                 </div>
@@ -192,7 +209,16 @@
                             <p class="text-gray-500 text-thin mt-1.5">{{ $post->excerpt }}</p>
                             <div class="flex space-x-4 items-center mt-4 text-xs text-gray-600">
                                 <span class="text-muted">{{ $post->created_at->format('M d') }}</span>
-                                <span class="text-muted">7.6K 💬 179</span>
+                                <span class="text-muted flex items-center">{{ $post->upvotes() }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                        fill="#5C5C5C" viewBox="0 0 256 256" class="mx-1">
+                                        <path
+                                            d="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z">
+                                        </path>
+                                    </svg>
+                                    <span class="text-muted mx-2">💬179</span>
+                                </span>
+
                             </div>
                         </div>
 
@@ -215,10 +241,10 @@
             <div class="relative hidden md:block border-r-[1px] border-gray-100 -right-10"></div>
 
             <!-- Sidebar Widgets (hanya muncul di desktop) -->
-            <div class="hidden md:block w-1/4 space-y-6 pl-6 sticky h-[calc(100vh-6rem)] top-1">
+            <div class="hidden md:block w-1/4 space-y-6 pl-6 sticky h-[calc(100vh-2rem)] top-10 pb-4">
                 <!-- Rekomendasi Topik -->
-                <div class="px-3.5 py-2 mt-12">
-                    <h3 class="text-lg font-semibold mb-4">Rekomendasi Topik</h3>
+                <div class="px-3.5 py-2 mt-20">
+                    <h3 class="text-lg font-semibold mb-4">Explore Topics</h3>
                     <div class="flex flex-wrap gap-2">
                         <!-- Menampilkan kategori yang terlihat -->
                         @foreach ($visibleCategories as $category)
@@ -233,32 +259,31 @@
                                 </span>
                             </a>
                         @endforeach
-                    
-                    </div>
-                        <!-- Accordion untuk kategori yang tidak terlihat -->
-                        <div class="mt-6 relative">
-                            <!-- Tombol Accordion -->
-                            <button id="accordionButton"
-                                class="rounded-md px-2 py-2 text-sm font-medium text-gray-800">
-                                See more topics
-                            </button>
 
-                            <!-- Konten Accordion -->
-                            <div id="accordionContent"
-                                class="hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0">
-                                @foreach ($sisaCategories as $category)
-                                    <a href="/categories/{{ $category->slug }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ $category->name }} ({{ $category->posts->count() }})
-                                    </a>
-                                @endforeach
-                            </div>
+                    </div>
+                    <!-- Accordion untuk kategori yang tidak terlihat -->
+                    <div class="mt-6 relative">
+                        <!-- Tombol Accordion -->
+                        <button id="accordionButton" class="rounded-md px-2 py-2 text-sm font-medium text-gray-800">
+                            See more topics
+                        </button>
+
+                        <!-- Konten Accordion -->
+                        <div id="accordionContent"
+                            class="hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0">
+                            @foreach ($sisaCategories as $category)
+                                <a href="/categories/{{ $category->slug }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ $category->name }} ({{ $category->posts->count() }})
+                                </a>
+                            @endforeach
                         </div>
                     </div>
+                </div>
 
                 <!-- Rekomendasi Penulis -->
                 <div class="p-5">
-                    <h3 class="text-lg font-semibold mb-4">Rekomendasi Penulis</h3>
+                    <h3 class="text-lg font-semibold mb-6">Explore Authors</h3>
                     <ul class="text-muted-foreground space-y-5">
                         @foreach ($users as $user)
                             <li class="flex items-center space-x-2">
@@ -295,7 +320,7 @@
     @endauth
 
 
-    
+
 </x-layout>
 
 <!-- Toastr Notifications -->

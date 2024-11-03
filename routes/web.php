@@ -52,7 +52,7 @@ Route::get('/categories/{category:slug}', function (Category $category) {
     // Ambil semua post yang terfilter berdasarkan kategori
     $posts = Post::filter(request(['search']))->whereHas('categories', function ($query) use ($category) {
         $query->where('slug', $category->slug);
-    })->latest()->get();
+    })->latest()->take(10)->get();
 
     // Kirim data ke view
     return view('posts', [
@@ -65,11 +65,12 @@ Route::get('/categories/{category:slug}', function (Category $category) {
 Route::get('/authors/{user:username}', function (User $user) {
     // Ambil semua post yang terfilter berdasarkan kategori
     $posts = Post::filter(request(['search'])) // Menggunakan scope filter
-                ->whereHas('author', function ($query) use ($user) {
-                    $query->where('author_id', $user->id); // Pastikan kita memfilter berdasarkan ID penulis
-                })
-                ->latest() // Mengurutkan berdasarkan waktu terbaru
-                ->get();
+            ->whereHas('author', function ($query) use ($user) {
+                $query->where('author_id', $user->id); // Pastikan kita memfilter berdasarkan ID penulis
+            })
+            ->latest() // Mengurutkan berdasarkan waktu terbaru
+            ->take(10)
+            ->get();
 
     // dd($posts);
 

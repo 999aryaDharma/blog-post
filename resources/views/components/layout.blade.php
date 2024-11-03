@@ -51,11 +51,6 @@
                 detail: modalName
             }));
         }
-
-        function closeModal() {
-            // Menutup modal dengan menghapus URL dari history state
-            history.back(); // Kembali ke state sebelumnya tanpa memuat ulang halaman
-        }
     </script>
 
     <!-- Di bagian bawah sebelum </body> -->
