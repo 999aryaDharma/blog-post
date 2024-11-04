@@ -12,9 +12,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [PostController::class, 'index'])->name('posts');
 
-Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('single-post', ['title' => $post->title, 'post' => $post]);
-});
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('checkSlug', [PostController::class, 'checkSlug']);
 

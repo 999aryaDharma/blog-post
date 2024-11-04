@@ -24,7 +24,7 @@
         <x-navbar></x-navbar>
 
         <main>
-            <div class="mx-auto max-w-full px-0 py-6">
+            <div class="mx-auto max-w-full px-0 py-6 selection:text-black selection:bg-lime-200">
                 {{ $slot }}
             </div>
         </main>

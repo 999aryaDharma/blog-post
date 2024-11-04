@@ -58,6 +58,8 @@ class CategoryResource extends Resource
                 //
             ])
             ->actions([
+                CreateAction::make()
+                    ->successRedirectUrl('/admin/categories'),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

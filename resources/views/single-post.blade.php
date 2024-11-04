@@ -28,7 +28,7 @@
     </style>
     </style>
 
-    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased">
+    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased selection:text-black selection:bg-lime-200">
         <div class="flex flex-col lg:flex-row justify-between mx-auto max-w-screen-xl">
             <article class="w-full pr-2 sm:px-6 lg:px-8 mx-auto max-w-5xl format format-sm sm:format-base lg:format-lg">
                 <header class="mb-4 lg:mb-6 not-format">
@@ -118,12 +118,8 @@
                 </header>
 
                 <!-- Content Section -->
-                <div
-                    class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
-                    <p>{!! $post->body !!}</p>
-                    <img src="http://localhost/storage/images/content/DxiGJHitp49eOyDKFVj61JTfZogumuDdWX3U1lcT.jpg" width="1600" height="1104">
-
-
+                <div class="content-body px-2 sm:px-4 lg:px-11 font-lora text-base sm:text-lg lg:text-xl text-gray-700 leading-10">
+                    {!! $post->body !!}
                 </div>
 
             </article>

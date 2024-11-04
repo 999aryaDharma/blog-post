@@ -4,10 +4,10 @@
 
     {{-- Latest Post (ambil 3) --}}
     {{-- Latest Post (ambil 3) --}}
-    <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-8 grid-cols-1 px-8 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 lg:px-20">
         @forelse ($posts as $post)
             <article
-                class="flex flex-col justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 sm:p-6">
+                class="flex flex-col justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out transform hover:shadow-lime-100 dark:bg-gray-800 dark:border-gray-700 sm:p-6">
                 <div class="relative">
                     @if (Auth::check() && Auth::user()->id === $post->author_id && request()->is('my-posts/*'))
                         <div id="dropdownButton-{{ $post->id }}" class="mb-1 absolute right-0 -top-2">
@@ -52,19 +52,17 @@
                 </div>
 
                 <!-- Post title and date -->
-                <div class=" gap-2 mb-3 items-center">
+                <div class="gap-2 mb-3 items-center">
                     <a href="/posts/{{ $post['slug'] }}" class="group">
                         <h2
                             class="text-2xl font-body font-extrabold tracking-tight text-gray-900 dark:text-white line-clamp-2">
                             {{ $post['title'] }}
                         </h2>
                     </a>
-                    {{-- <div class="hidden sm:block mt-1">|</div> --}}
                     <div class="items-center text-gray-400 text-xs mt-1">
                         <p>{{ $post->created_at->format('M d') }}</p>
                     </div>
                 </div>
-
 
                 <p class="font-[Segoe UI] mb-5 font-light text-gray-500 dark:text-gray-400 line-clamp-4">
                     {{ $post->excerpt }}</p>
@@ -89,6 +87,8 @@
             </div>
         @endforelse
     </div>
+
+
 
     <!-- Floating action button with better mobile positioning -->
     @auth

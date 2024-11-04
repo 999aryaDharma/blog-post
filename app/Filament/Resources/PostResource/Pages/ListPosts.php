@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PostResource\Pages;
 
+use App\Models\Post;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use App\Filament\Resources\PostResource;
@@ -24,12 +25,15 @@ class ListPosts extends ListRecords
         return [
             'all' => Tab::make(), // Tambahkan label yang jelas
             'this Week' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('created_at', '>=', now()->subWeek())
-            ),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('created_at', '>=', now()->subWeek()))
+                ->badge(Post::query()->where('created_at', '>=', now()->subWeek())->count()),
             'this month' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query
                     ->whereMonth('created_at', now()->month)
-                    ->whereYear('created_at', now()->year)), // Hanya entri bulan ini
+                    ->whereYear('created_at', now()->year))
+                ->badge(Post::query()
+                    ->whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year)->count()), // Hanya entri bulan ini
         ];
     }
 }
