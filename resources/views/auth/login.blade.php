@@ -21,12 +21,12 @@
         class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg ring-1 ring-gray-200">
         @csrf
 
-        <!-- Email Address -->
+        <!-- Email Address & Username -->
         <div class="mb-6">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" type="email" name="email" :value="old('email')" required autofocus
-                autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-600" />
+            <x-input-label for="id_user" :value="__('Email/Username')" />
+            <x-text-input id="id_user" type="text" name="id_user" :value="old('id_user')" required autofocus
+                autocomplete="id_user" />
+            <x-input-error :messages="$errors->get('id_user')" class="mt-2 text-red-600" />
         </div>
 
         <!-- Password -->

@@ -6,12 +6,17 @@ export default {
     content: [
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
         "./storage/framework/views/*.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
         "./resources/views/**/*.blade.php",
         "./node_modules/flowbite/**/*.js",
     ],
 
     theme: {
         extend: {
+            transitionDuration: {
+                200: "200ms",
+            },
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
                 body: [
@@ -31,6 +36,9 @@ export default {
                     "Noto Color Emoji",
                 ],
                 headline: ['"Helvetica Neue"', "sans-serif"],
+                lora: ["Lora", "serif"],
+                nunito: ["Nunito Sans", "sans-serif"],
+                playfair: ["Playfair Display", "serif"],
             },
             colors: {
                 primary: {
@@ -50,12 +58,8 @@ export default {
         },
     },
 
-    plugins: [
-        require("flowbite/plugin", "@tailwindcss/line-clamp"),
-        forms
-    ],
+    plugins: [require("flowbite/plugin", "@tailwindcss/line-clamp"), forms],
 
-    
     safelist: [
         "bg-red-100",
         "bg-green-100",
@@ -65,5 +69,18 @@ export default {
         "bg-gray-100",
         "bg-indigo-100",
         "bg-purple-100",
+        "bg-orange-100",
+        "bg-teal-100",
+        "bg-slate-100",
+        "bg-lime-100",
+        "bg-fuchsia-100",
+        "bg-emerald-100",
+        "bg-amber-100",
+        "bg-cyan-100",
+        "bg-sky-100",
+        "bg-violet-100",
+        "bg-rose-100",
+        "bg-emerald-100",
+        "bg-fuchsia-100",
     ],
 };

@@ -3,17 +3,17 @@
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
-use App\Helpers\TextHelper;
 use App\Http\Middleware\SearchFilter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [PostController::class, 'index'])->name('posts');
 
 Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('post', ['title' => $post->title, 'post' => $post]);
+    return view('single-post', ['title' => $post->title, 'post' => $post]);
 });
 
 Route::get('checkSlug', [PostController::class, 'checkSlug']);
@@ -32,7 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-posts/{user:username}', [PostController::class, 'userPosts'])->name('my-posts');
 
     Route::get('/posts/{title}', [PostController::class, 'show'])->name('posts.show');
-
+    
+    Route::post('/posts/{post}/vote', [VoteController::class, 'vote'])->name('posts.vote');
     
 
 });
@@ -48,25 +49,40 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/categories/{category:slug}', function (Category $category) {
-    // Batasi body untuk setiap postingan di dalam rute
-    $posts = TextHelper::limitBodyContent($category->posts);
-    
+    // Ambil semua post yang terfilter berdasarkan kategori
+    $posts = Post::filter(request(['search']))->whereHas('categories', function ($query) use ($category) {
+        $query->where('slug', $category->slug);
+    })->latest()->take(10)->get();
+
     // Kirim data ke view
     return view('posts', [
         'title' => 'Articles in: ' . $category->name,
-        'posts' => $posts
+        'posts' => $posts,
     ]);
 })->name('categories.show');
 
 
 Route::get('/authors/{user:username}', function (User $user) {
-    // Dapatkan semua post berdasarkan author_id
-    $posts = TextHelper::limitBodyContent($user->posts);
-    
+    // Ambil semua post yang terfilter berdasarkan kategori
+    $posts = Post::filter(request(['search'])) // Menggunakan scope filter
+            ->whereHas('author', function ($query) use ($user) {
+                $query->where('author_id', $user->id); // Pastikan kita memfilter berdasarkan ID penulis
+            })
+            ->latest() // Mengurutkan berdasarkan waktu terbaru
+            ->take(10)
+            ->get();
+
+    // dd($posts);
+
+    // \DB::enableQueryLog(); // Mengaktifkan log query
+
+    // Melihat query yang dijalankan di log
+    // dd(\DB::getQueryLog());
+
     // Tampilkan view dengan data
     return view('posts', [
         'title' => 'Articles by: ' . $user->username,
-        'posts' => $posts
+        'posts' => $posts,
     ]);
 });
 

@@ -9,22 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('post_images', function (Blueprint $table) {
+        Schema::create('votes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->string('image_url');
+            $table->enum('vote', ['up', 'down']); // Upvote atau downvote
             $table->timestamps();
+            $table->unique(['user_id', 'post_id']); // Agar satu user hanya bisa vote sekali per post
         });
-    }
 
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_images');
+        Schema::dropIfExists('votes');
     }
 };

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Vote;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -15,7 +16,7 @@ class Post extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['title', 'author_id', 'slug', 'body'];
+    protected $fillable = ['title', 'excerpt', 'thumbnail', 'author_id', 'slug', 'body'];
     protected $with = ['author', 'categories'];
 
     public function author(): BelongsTo
@@ -38,34 +39,55 @@ class Post extends Model
         ];
     }
 
-    public function scopeFilter(Builder $query, array $filters): void {
+    public function scopeFilter($query, array $filters)
+    {
+        // Filter berdasarkan pencarian judul
+        if (!empty($filters['search'])) {
+            $query->where('title', 'like', '%' . $filters['search'] . '%');
+        }
 
-        $query->when($filters['search'] ?? false, 
-            fn ($query, $search) =>
-            $query->where('title', 'like', '%' . $search . '%')
-        );
+        // Filter berdasarkan kategori
+        if (!empty($filters['category'])) {
+            $query->whereHas('categories', function ($query) use ($filters) {
+                $query->where('slug', $filters['category']);
+            });
+        }
 
-        $query->when($filters['category'] ?? false, 
-            fn ($query, $category) =>
-            $query->whereHas('categories', 
-                fn ($query) =>
-                $query->where('name', $category)
-            )
-        );
-
-        $query->when($filters['author'] ?? false, 
-            fn ($query, $author) =>
-            $query->whereHas('author', 
-                fn ($query) =>
-                $query->where('username', $author)
-            )
-        );
+        // Filter berdasarkan penulis
+        if (!empty($filters['author'])) {
+            $query->whereHas('author', function ($query) use ($filters) {
+                $query->where('username', $filters['author']);
+            });
+        }
     }
+
 
     public function images(): HasMany
     {
         return $this->hasMany(PostImage::class);
     }
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : null;
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function upvotes()
+    {
+        return $this->votes()->where('vote', 'up')->count();
+    }
+
+    public function downvotes()
+    {
+        return $this->votes()->where('vote', 'down')->count();
+    }
+
+
 
 
 }
