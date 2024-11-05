@@ -17,8 +17,8 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {   
-        
+    {
+
         // Mengambil 3 post dengan views terbanyak untuk most popular
         // $mostPopularPosts = Post::orderBy('views', 'desc')->take(3)->get();
 
@@ -40,7 +40,6 @@ class PostController extends Controller
         $categories = Category::all();
 
         return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts'));
-        
     }
 
     /**
@@ -50,7 +49,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         // Pass categories to the view
-        
+
         return view('posts.form', [
             'categories' => $categories,
             'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post'
@@ -66,47 +65,47 @@ class PostController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|unique:posts,slug',
-            'categories' => 'required|array',  // Pastikan categories sebagai array
+            'categories' => 'required|array',
             'body' => 'required',
-            // 'images' => 'array',
+            'thumbnail' => ['required', 'image'],  // Thumbnail wajib ada
+            'images.*' => 'image',  // Pastikan setiap item di array images adalah gambar
         ]);
 
         // Tambahkan ID penulis (user yang sedang login)
         $validatedData['author_id'] = auth()->user()->id;
 
-        // Buat post baru dengan data yang divalidasi
+        // Buat post baru tanpa kolom thumbnail
         $post = Post::create([
             'title' => $validatedData['title'],
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
-            'body' =>  $validatedData['body'],
-            // 'images' => $validatedData['images'],
+            'body' => $validatedData['body'],
         ]);
 
-        // Simpan setiap gambar ke dalam tabel post_images
+        // Simpan thumbnail utama ke dalam tabel post_images
+        $thumbnailPath = $request->file('thumbnail')->store('thumbnails');
+        $post->images()->create(['image_url' => $thumbnailPath, 'is_thumbnail' => true]);
+
+        // Simpan setiap gambar tambahan ke dalam tabel post_images jika ada
         if ($request->has('images')) {
-            foreach ($request->images as $image) {
-                $post->images()->create(['image_url' => $image]);
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('images');
+                $post->images()->create(['image_url' => $imagePath, 'is_thumbnail' => false]);
             }
         }
-        
+
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);
-
-        $posts = Post::where('author_id', auth()->id())->get();
 
         // Redirect dengan pesan sukses
         return redirect('/')->with('success', 'Post created successfully.');
     }
-
+    
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-     
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -125,7 +124,6 @@ class PostController extends Controller
             'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post',
             'categories' => $categories,
         ])->with(compact('post'));
-
     }
 
     /**
@@ -136,9 +134,9 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
 
         $validatedData = $request->validate([
-        'title' => 'required|max:255',
-        'body' => 'required',
-        'categories' => 'required|array',
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'categories' => 'required|array',
         ]);
 
         $post->update([
@@ -160,7 +158,7 @@ class PostController extends Controller
     {
         // Temukan post berdasarkan ID
         $post = Post::findOrFail($id);
-        
+
         $post->delete();
 
         return back()->with('success', 'Post deleted successfully.');
@@ -182,13 +180,11 @@ class PostController extends Controller
 
         // Kirim data ke view
         return view('user-posts', [
-            'title' => $user->username . "'s Posts" ,
+            'title' => $user->username . "'s Posts",
             'posts' => $posts,
             'categories' => $categories,
-            'users' => $users
-
+            'users' => $users,
+            // 'thumbnail' => $thumbnail,
         ]);
     }
-
-
 }
