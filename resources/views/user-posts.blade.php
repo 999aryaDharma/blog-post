@@ -7,7 +7,7 @@
     <div class="grid gap-8 grid-cols-1 px-4 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3">
         @forelse ($posts as $post)
             <article
-                class="flex flex-col justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 sm:p-6">
+                class="flex flex-col justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out transform hover:shadow-lime-100 dark:bg-gray-800 dark:border-gray-700 sm:p-6">
                 <div class="relative">
                     @if (Auth::check() && Auth::user()->id === $post->author_id && request()->is('my-posts/*'))
                         <div id="dropdownButton-{{ $post->id }}" class="mb-1 absolute right-0 -top-2">

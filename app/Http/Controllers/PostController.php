@@ -20,7 +20,7 @@ class PostController extends Controller
     {   
         
         // Mengambil 3 post dengan views terbanyak untuk most popular
-        $mostPopularPosts = Post::withCount(['votes as upvotes' => function ($query) {
+        $popularPosts = Post::withCount(['votes as upvotes' => function ($query) {
             $query->where('vote', 'up');
         }])
         ->orderByDesc('upvotes')
@@ -30,12 +30,8 @@ class PostController extends Controller
         // Mengambil 3 post terbaru berdasarkan created_at
         $latestPosts = Post::latest()->take(3)->get();
 
-        # Mengambil semua post kecuali yang ada di most popular dan latest
-        // $excludedPostIds = $mostPopularPosts->pluck('id')->merge($latestPosts->pluck('id'));
-        // $regularPosts = Post::whereNotIn('id', $excludedPostIds)->paginate(10);
-
         // Mengambil post dengan filter yang diterapkan
-        $posts = Post::filter(request(['search', 'category', 'author']))->with('votes')->latest()->take(10)->get();
+        $posts = Post::filter(request(['search', 'category', 'author']))->inRandomOrder()->with('votes')->latest()->take(10)->get();
 
         $title = 'All Posts';
 
@@ -50,7 +46,7 @@ class PostController extends Controller
         // Ambil sisa kategori yang tidak ditampilkan
         $sisaCategories = $categories->slice(4);
 
-        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts', 'visibleCategories', 'sisaCategories', 'mostPopularPosts'));
+        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts', 'visibleCategories', 'sisaCategories', 'popularPosts'));
         
     }
 
@@ -121,9 +117,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-     
+        return view('single-post', ['title' => $post->title, 'post' => $post]);
     }
 
     /**
@@ -265,21 +261,23 @@ class PostController extends Controller
     }
 
     public function upload(Request $request)
-{
-    if ($request->hasFile('upload')) {
-        $file = $request->file('upload');
-        $path = $file->store('images/uploads', 'public'); // Menyimpan di public storage
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $path = $file->store('images/uploads', 'public'); // Menyimpan di public storage
 
-        // Mendapatkan URL lengkap untuk gambar yang diunggah
-        $url = Storage::url($path);
+            // Mendapatkan URL lengkap untuk gambar yang diunggah
+            $url = Storage::url($path);
 
-        return response()->json([
-            'url' => $url
-        ]);
+            return response()->json([
+                'url' => $url
+            ]);
+        }
+
+        return response()->json(['error' => 'Upload failed'], 400);
     }
 
-    return response()->json(['error' => 'Upload failed'], 400);
-}
+
 
 
 

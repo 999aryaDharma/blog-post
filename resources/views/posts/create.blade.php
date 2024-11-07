@@ -124,7 +124,6 @@
                     Image,
                     ImageToolbar,
                     ImageUpload,
-                    ImageResize,
                     SimpleUploadAdapter,
                     CodeBlock,
                     HorizontalLine,
@@ -137,7 +136,7 @@
                         plugins: [
                             Essentials, Bold, Italic, Font, Paragraph,
                             Heading, List, Link, BlockQuote, // Tambahkan plugin tambahan
-                            Image, ImageToolbar, ImageUpload, ImageResize, SimpleUploadAdapter, CodeBlock, HorizontalLine,
+                            Image, ImageToolbar, ImageUpload, SimpleUploadAdapter, CodeBlock, HorizontalLine,
                             Alignment, SpecialCharacters
                         ],
                         toolbar: [
@@ -171,25 +170,6 @@
                                     class: 'ck-heading_heading3'
                                 }
                             ]
-                        },
-                        image: {
-                            resizeOptions: [{
-                                    name: 'resizeImage:original',
-                                    label: 'Original',
-                                    value: null
-                                },
-                                {
-                                    name: 'resizeImage:50',
-                                    label: '50%',
-                                    value: '50'
-                                },
-                                {
-                                    name: 'resizeImage:75',
-                                    label: '75%',
-                                    value: '75'
-                                }
-                            ],
-                            toolbar: ['resizeImage', 'resizeImage:50', 'resizeImage:75']
                         },
                         simpleUpload: {
                             uploadUrl: '/upload-image', // Sesuaikan dengan route Laravel Anda

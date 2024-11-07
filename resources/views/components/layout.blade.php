@@ -20,19 +20,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 </head>
 
-<body class="h-full">
+<body class="h-full ">
     <div class="min-h-full">
         <x-navbar></x-navbar>
 
         <main>
-            <div class="mx-auto max-w-full px-0 py-6">
+            <div class="mx-auto max-w-full px-0 py-6 selection:bg-lime-300 selection:text-black">
                 {{ $slot }}
             </div>
         </main>
 
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.4.1/flowbite.min.js"></script>
 
     <!-- Modal Components -->
@@ -59,7 +58,7 @@
     @stack('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></script>
+
 
 </body>
 
