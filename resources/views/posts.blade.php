@@ -324,29 +324,7 @@
 </x-layout>
 
 <!-- Toastr Notifications -->
-@if (Session::has('success'))
-    <script>
-        $(document).ready(function() {
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": true,
-                "onclick": null,
-                "showDuration": "5000",
-                "hideDuration": "5000",
-                "timeOut": "5000",
-                "extendedTimeOut": "3000",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            toastr.success("{{ Session::get('success') }}");
-        });
-    </script>
-@endif
-
+<script src="/resources/js/toastr-notif.js"></script>
 
 
 {{-- dropdwon category --}}

@@ -151,6 +151,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // dd($request->all());
         // Validasi data yang diinput oleh pengguna
         $validatedData = $request->validate([
             'title' => 'required|max:150',
@@ -184,22 +185,48 @@ class PostController extends Controller
             $validatedData['thumbnail'] = $post->thumbnail; // Pertahankan thumbnail lama
         }
 
+        // Menangani gambar yang di-upload melalui CKEditor (pastikan data gambar ada dalam body)
+        $bodyContent = $validatedData['body'];
+
+        // Temukan semua tag gambar <img> dalam body content
+        preg_match_all('/<img[^>]+src="([^">]+)"/', $bodyContent, $matches);
+        $imageUrls = $matches[1];
+
+        foreach ($imageUrls as $imageUrl) {
+            // Periksa apakah URL gambar valid (misalnya, gambar diupload melalui CKEditor)
+            if (strpos($imageUrl, 'storage') !== false) {
+                // Simpan gambar ke dalam folder yang sesuai dan perbarui URL
+                // Misalnya, jika gambar di CKEditor diupload ke `/storage/images/content/`
+                $imagePath = Storage::disk('public')->path($imageUrl);
+
+                // Anda bisa memindahkan atau memperbarui gambar sesuai kebutuhan
+                // Misalnya, mengganti dengan path baru atau menyimpannya di tempat tertentu
+                $newImagePath = 'images/uploads/' . basename($imagePath);
+                Storage::disk('public')->move($imagePath, $newImagePath);
+                
+                // Perbarui URL gambar dalam konten
+                $bodyContent = str_replace($imageUrl, Storage::url($newImagePath), $bodyContent);
+            }
+        }
+
         // Perbarui post dengan data yang divalidasi
         $post->update([
             'title' => $validatedData['title'],
             'excerpt' => $validatedData['excerpt'],
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
-            'body' => $validatedData['body'],
+            'body' => $bodyContent, // Perbarui dengan body yang sudah diubah
             'thumbnail' => $validatedData['thumbnail'],
         ]);
-        
+
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('my-posts')->with('success', 'Post updated successfully.');
+        return redirect('/my-posts/' . $post->author->username)->with('success', 'Post updated successfully.');
     }
+
+
 
 
     /**
@@ -236,6 +263,24 @@ class PostController extends Controller
 
         ]);
     }
+
+    public function upload(Request $request)
+{
+    if ($request->hasFile('upload')) {
+        $file = $request->file('upload');
+        $path = $file->store('images/uploads', 'public'); // Menyimpan di public storage
+
+        // Mendapatkan URL lengkap untuk gambar yang diunggah
+        $url = Storage::url($path);
+
+        return response()->json([
+            'url' => $url
+        ]);
+    }
+
+    return response()->json(['error' => 'Upload failed'], 400);
+}
+
 
 
 }
