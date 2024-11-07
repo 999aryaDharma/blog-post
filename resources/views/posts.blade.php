@@ -123,11 +123,12 @@
                         </div>
 
                         <!-- Categories -->
-                        <div class="flex flex-wrap gap-2 mb-4">
+                        <div class="flex flex-wrap gap-2 mb-4 relative justify">
+                            <img src="{{$post->thumbnailUrl}}" alt="" class="items-cente">
                             @foreach ($post->categories as $category)
                                 <a href="/categories/{{ $category->slug }}" class="text-md">
                                     <span
-                                        class="bg-{{ $category->color }}-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                                        class="bg-{{ $category->color }}-100 text-primary-800 justify-between top-2 left-1 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
                                         {{ $category->name }}
                                     </span>
                                 </a>

@@ -39,9 +39,6 @@ class PostController extends Controller
 
         $title = 'All Posts';
 
-<<<<<<< HEAD
-        return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts'));
-=======
         $users = User::inRandomOrder()->take(3)->get();
 
         // Ambil semua kategori
@@ -55,7 +52,6 @@ class PostController extends Controller
 
         return view('posts', compact('title', 'posts', 'categories', 'users', 'latestPosts', 'visibleCategories', 'sisaCategories', 'mostPopularPosts'));
         
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
     }
 
     /**
@@ -65,13 +61,8 @@ class PostController extends Controller
     {
         $categories = Category::all();
         // Pass categories to the view
-<<<<<<< HEAD
-
-        return view('posts.form', [
-=======
         
         return view('posts.create', [
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
             'categories' => $categories,
             'title' => request()->route()->getName() === 'posts.edit' ? 'Edit Post' : 'Create Post'
         ]);
@@ -87,24 +78,14 @@ class PostController extends Controller
             'title' => 'required|max:150',
             'excerpt' => 'required|max:100',
             'slug' => 'required|unique:posts,slug',
-<<<<<<< HEAD
-            'categories' => 'required|array',
-            'body' => 'required',
-            'thumbnail' => ['required', 'image'],  // Thumbnail wajib ada
-            'images.*' => 'image',  // Pastikan setiap item di array images adalah gambar
-=======
             'categories' => 'required|array', // Pastikan categories sebagai array
             'body' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Tambahkan ukuran maksimal
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
         ]);
 
         // Tambahkan ID penulis (user yang sedang login)
         $validatedData['author_id'] = auth()->user()->id;
 
-<<<<<<< HEAD
-        // Buat post baru tanpa kolom thumbnail
-=======
         // Simpan gambar thumbnail jika ada
         if ($request->hasFile('thumbnail')) {
             // Buat nama file berdasarkan judul post, dengan format yang aman
@@ -121,43 +102,21 @@ class PostController extends Controller
         }
 
         // Buat post baru dengan data yang divalidasi
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
         $post = Post::create([
             'title' => $validatedData['title'],
             'excerpt' => $validatedData['excerpt'],
             'slug' => $validatedData['slug'],
             'author_id' => $validatedData['author_id'],
             'body' => $validatedData['body'],
-<<<<<<< HEAD
-        ]);
-
-        // Simpan thumbnail utama ke dalam tabel post_images
-        $thumbnailPath = $request->file('thumbnail')->store('thumbnails');
-        $post->images()->create(['image_url' => $thumbnailPath, 'is_thumbnail' => true]);
-
-        // Simpan setiap gambar tambahan ke dalam tabel post_images jika ada
-        if ($request->has('images')) {
-            foreach ($request->file('images') as $image) {
-                $imagePath = $image->store('images');
-                $post->images()->create(['image_url' => $imagePath, 'is_thumbnail' => false]);
-            }
-        }
-
-=======
             'thumbnail' => $validatedData['thumbnail'],
         ]);
         
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
         // Sinkronisasi kategori yang dipilih
         $post->categories()->sync($validatedData['categories']);
 
         // Redirect dengan pesan sukses
         return redirect('/')->with('success', 'Post created successfully.');
     }
-<<<<<<< HEAD
-    
-=======
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
 
     /**
      * Display the specified resource.
@@ -190,18 +149,12 @@ class PostController extends Controller
     {
         // Validasi data yang diinput oleh pengguna
         $validatedData = $request->validate([
-<<<<<<< HEAD
-            'title' => 'required|max:255',
-            'body' => 'required',
-            'categories' => 'required|array',
-=======
             'title' => 'required|max:150',
             'excerpt' => 'required|max:100',
             'slug' => 'required|unique:posts,slug,' . $post->id, // Update slug harus unik kecuali untuk post yang sedang diupdate
             'categories' => 'required|array', // Pastikan categories sebagai array
             'body' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Tambahkan ukuran maksimal
->>>>>>> 2a828cee4b622e810c060864ce9e6f45b6b76b80
         ]);
 
         // Tambahkan ID penulis (user yang sedang login)
