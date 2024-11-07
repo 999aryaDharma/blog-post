@@ -1,5 +1,16 @@
 <x-layout>
     <x-slot:title>Create Post</x-slot:title>
+    <style>
+        .ck-editor__editable[role="textbox"] {
+            min-height: 300px;
+            min-width: 900px;
+        }
+
+        .ck.ck-toolbar .ck.ck-toolbar__items {
+            margin-right: 20px;
+            /* Jarak antar tombol toolbar */
+        }
+    </style>
 
     <div class="container mx-auto max-w-screen-xl lg:px-0">
         <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
@@ -73,12 +84,11 @@
                 <label for="thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail</label>
                 <x-text-input type="file" id="thumbnail" name="thumbnail"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    accept="image/*" onchange="previewImage(event)" required/>
+                    accept="image/*" onchange="previewImage(event)" required />
 
                 {{-- Preview Gambar yang Dipilih --}}
                 <div class="mt-2">
-                    <img id="imagePreview" src="" alt="Image Preview"
-                        class="hidden w-32 h-32 object-cover" />
+                    <img id="imagePreview" src="" alt="Image Preview" class="hidden w-32 h-32 object-cover" />
                 </div>
             </div>
 
@@ -86,7 +96,7 @@
             <div class="my-6 px-5">
                 <label for="body" class="block text-sm font-medium text-gray-700">Body</label>
                 <input type="hidden" id="body" name="body" value="{{ old('body') }}">
-                <trix-editor input="body"></trix-editor>
+                <textarea id="editor" name="body"></textarea>
                 @error('body')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -97,6 +107,106 @@
         </form>
 
         @push('scripts')
+            <script src="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.umd.js"></script>
+
+            <script>
+                const {
+                    ClassicEditor,
+                    Essentials,
+                    Bold,
+                    Italic,
+                    Font,
+                    Link,
+                    List,
+                    Heading, // Tambahkan plugin Heading
+                    BlockQuote, // Tambahkan plugin BlockQuote
+                    Paragraph,
+                    Image,
+                    ImageToolbar,
+                    ImageUpload,
+                    ImageResize,
+                    SimpleUploadAdapter,
+                    CodeBlock,
+                    HorizontalLine,
+                    Alignment,
+                    SpecialCharacters,
+                } = CKEDITOR;
+
+                ClassicEditor
+                    .create(document.querySelector('#editor'), {
+                        plugins: [
+                            Essentials, Bold, Italic, Font, Paragraph,
+                            Heading, List, Link, BlockQuote, // Tambahkan plugin tambahan
+                            Image, ImageToolbar, ImageUpload, ImageResize, SimpleUploadAdapter, CodeBlock, HorizontalLine,
+                            Alignment, SpecialCharacters
+                        ],
+                        toolbar: [
+                            'undo', 'redo', '|', 'heading', 'alignment', '|', 'bold', 'italic', '|',
+                            'fontSize', 'fontFamily', 'fontColor', '|', 'link', '|',
+                            'blockQuote', 'CodeBlock', '|', 'numberedList', 'bulletedList', '|',
+                            'fontBackgroundColor', 'HorizontalLine', '|', 'specialCharacters', '|', 'imageUpload'
+                        ],
+                        heading: {
+                            options: [{
+                                    model: 'paragraph',
+                                    title: 'Paragraph',
+                                    class: 'ck-heading_paragraph'
+                                },
+                                {
+                                    model: 'heading1',
+                                    view: 'h1',
+                                    title: 'Heading 1',
+                                    class: 'ck-heading_heading1'
+                                },
+                                {
+                                    model: 'heading2',
+                                    view: 'h2',
+                                    title: 'Heading 2',
+                                    class: 'ck-heading_heading2'
+                                },
+                                {
+                                    model: 'heading3',
+                                    view: 'h3',
+                                    title: 'Heading 3',
+                                    class: 'ck-heading_heading3'
+                                }
+                            ]
+                        },
+                        image: {
+                            resizeOptions: [{
+                                    name: 'resizeImage:original',
+                                    label: 'Original',
+                                    value: null
+                                },
+                                {
+                                    name: 'resizeImage:50',
+                                    label: '50%',
+                                    value: '50'
+                                },
+                                {
+                                    name: 'resizeImage:75',
+                                    label: '75%',
+                                    value: '75'
+                                }
+                            ],
+                            toolbar: ['resizeImage', 'resizeImage:50', 'resizeImage:75']
+                        },
+                        simpleUpload: {
+                            uploadUrl: '/upload-image', // Sesuaikan dengan route Laravel Anda
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        }
+                    })
+                    .then(editor => {
+                        console.log('Editor berhasil diinisialisasi:', editor);
+                    })
+                    .catch(error => {
+                        console.error('Terjadi error saat inisialisasi CKEditor:', error);
+                    });
+            </script>
+
+
             <script>
                 const title = document.querySelector('#title');
                 const slug = document.querySelector('#slug');

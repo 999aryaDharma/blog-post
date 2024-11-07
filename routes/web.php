@@ -34,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/posts/{title}', [PostController::class, 'show'])->name('posts.show');
     
     Route::post('/posts/{post}/vote', [VoteController::class, 'vote'])->name('posts.vote');
+
+    Route::post('/upload-image', [PostController::class, 'upload'])->name('ckeditor.upload');
+
     
 
 });

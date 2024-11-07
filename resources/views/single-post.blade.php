@@ -117,23 +117,9 @@
 </x-layout>
 
 
-<script>
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-center",
-        "preventDuplicates": true,
-        "onclick": null,
-        "showDuration": "5000",
-        "hideDuration": "5000",
-        "timeOut": "5000",
-        "extendedTimeOut": "3000",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
+    <script src="/resources/js/toastr-notif.js"></script>
 
+    <script>
     function submitVote(post_id, voteType) {
         fetch(`/posts/${post_id}/vote`, {
                 method: 'POST',
