@@ -89,7 +89,7 @@
             <div class="my-6 px-5">
                 <label for="body" class="block text-sm font-medium text-gray-700">Body</label>
                 <input type="hidden" id="body" name="body" value="{{ old('body', $post->body) }}">
-                <trix-editor input="body"></trix-editor>
+                <textarea name="body" id="editor" cols="30" rows="10"></textarea>
             </div>
 
             {{-- Button Submit --}}
@@ -97,6 +97,113 @@
         </form>
 
         @push('scripts')
+            <script src="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.umd.js"></script>
+
+            <script>
+                const {
+                    ClassicEditor,
+                    Essentials,
+                    Bold,
+                    Italic,
+                    Font,
+                    Link,
+                    List,
+                    Heading, // Tambahkan plugin Heading
+                    BlockQuote, // Tambahkan plugin BlockQuote
+                    Paragraph,
+                    Image,
+                    ImageToolbar,
+                    ImageUpload,
+                    ImageResize,
+                    SimpleUploadAdapter,
+                    CodeBlock,
+                    HorizontalLine,
+                    Alignment,
+                    SpecialCharacters,
+                    ImageCaption,
+                } = CKEDITOR;
+
+                ClassicEditor
+                    .create(document.querySelector('#editor'), {
+                        plugins: [
+                            Essentials, Bold, Italic, Font, Paragraph,
+                            Heading, List, Link, BlockQuote, // Tambahkan plugin tambahan
+                            Image, ImageToolbar, ImageUpload, ImageResize, SimpleUploadAdapter, CodeBlock, HorizontalLine,
+                            Alignment, SpecialCharacters, ImageCaption
+                        ],
+                        toolbar: [
+                            'undo', 'redo', '|', 'heading', 'alignment', '|', 'bold', 'italic', '|',
+                            'fontSize', 'fontFamily', 'fontColor', '|', 'link', '|',
+                            'blockQuote', 'CodeBlock', '|', 'numberedList', 'bulletedList', '|',
+                            'fontBackgroundColor', 'HorizontalLine', '|', 'specialCharacters', '|', 'imageUpload', 'imageCaption'
+                        ],
+                        heading: {
+                            options: [{
+                                    model: 'paragraph',
+                                    title: 'Paragraph',
+                                    class: 'ck-heading_paragraph'
+                                },
+                                {
+                                    model: 'heading1',
+                                    view: 'h1',
+                                    title: 'Heading 1',
+                                    class: 'ck-heading_heading1'
+                                },
+                                {
+                                    model: 'heading2',
+                                    view: 'h2',
+                                    title: 'Heading 2',
+                                    class: 'ck-heading_heading2'
+                                },
+                                {
+                                    model: 'heading3',
+                                    view: 'h3',
+                                    title: 'Heading 3',
+                                    class: 'ck-heading_heading3'
+                                }
+                            ]
+                        },
+                        image: {
+                            resizeOptions: [{
+                                    name: 'resizeImage:original',
+                                    label: 'Original',
+                                    value: null
+                                },
+                                {
+                                    name: 'resizeImage:50',
+                                    label: '50%',
+                                    value: '50'
+                                },
+                                {
+                                    name: 'resizeImage:75',
+                                    label: '75%',
+                                    value: '75'
+                                }
+                            ],
+                            toolbar: ['resizeImage', 'resizeImage:50', 'resizeImage:75', 'imageTextAlternative', 'imageCaption']
+                        },
+                        simpleUpload: {
+                            uploadUrl: '/upload-image', // Sesuaikan dengan route Laravel Anda
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        }
+                    })
+                    .then(editor => {
+                        // Memuat konten lama ke dalam editor menggunakan setData()
+                        editor.setData('{!! old('body', $post->body) !!}');
+                        // Menyimpan data dari CKEditor ke dalam textarea sebelum form disubmit
+                        document.querySelector('form').onsubmit = function() {
+                            // Menyimpan data CKEditor ke dalam textarea
+                            document.querySelector('#editor').value = editor.getData();
+                        };
+                        console.log('Editor berhasil diinisialisasi:', editor);
+                    })
+                    .catch(error => {
+                        console.error('Terjadi error saat inisialisasi CKEditor:', error);
+                    });
+            </script>
+
             <script>
                 const title = document.querySelector('#title');
                 const slug = document.querySelector('#slug');

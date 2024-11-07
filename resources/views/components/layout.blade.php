@@ -15,23 +15,24 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 </head>
 
-<body class="h-full">
+<body class="h-full ">
     <div class="min-h-full">
         <x-navbar></x-navbar>
 
         <main>
-            <div class="mx-auto max-w-full px-0 py-6 selection:text-black selection:bg-lime-200">
+            <div class="mx-auto max-w-full px-0 py-6">
                 {{ $slot }}
             </div>
         </main>
 
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.4.1/flowbite.min.js"></script>
 
     <!-- Modal Components -->
@@ -52,15 +53,14 @@
                 detail: modalName
             }));
         }
-
-        function closeModal() {
-            // Menutup modal dengan menghapus URL dari history state
-            history.back(); // Kembali ke state sebelumnya tanpa memuat ulang halaman
-        }
     </script>
 
     <!-- Di bagian bawah sebelum </body> -->
     @stack('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
     @livewireScripts
 </body>
 

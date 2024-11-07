@@ -6,7 +6,7 @@
 
     <!-- Tombol Close -->
     <div class="absolute top-4 right-4 z-50">
-        <button onclick="closeModal()" class="transition-all text-gray-600 hover:text-gray-900">
+        <button onclick="window.location.href='{{ url('/') }}'" class="transition-all text-gray-600 hover:text-gray-900">
             <!-- Ikon Close -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -32,7 +32,7 @@
         <!-- Password -->
         <div class="mb-6">
             <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" type="password" name="password" required autocomplete="current-password" />
+            <x-text-input class="password" type="password" name="password" required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-600" />
         </div>
 
