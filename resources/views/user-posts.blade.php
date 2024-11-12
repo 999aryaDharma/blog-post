@@ -78,8 +78,11 @@
         @empty
             <div class="fixed inset-0 flex items-center justify-center p-4">
                 <div
-                    class="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 p-6 text-center">
-                    <p class="font-semibold text-xl sm:text-2xl mb-4">Article not found!</p>
+                    class="bg-white rounded-lg border border-gray-200 shadow-lg dark:bg-gray-800 dark:border-gray-700 p-6 text-center">
+                    <h2 class="text-2xl font-semibold">No Blogs Created Yet</h2>
+                    <p class="text-gray-600 mt-4">Hello, <strong>{{ $user->username }}</strong>! It looks like you
+                        haven’t shared any stories or articles yet. <br> Start sharing your ideas and inspirations by writing
+                        your first blog!</p>
                     <a href="/" class="font-medium text-sm text-blue-600 hover:underline">&laquo; Back to
                         all posts</a>
                 </div>

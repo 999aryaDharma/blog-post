@@ -5,7 +5,7 @@
     {{-- searching for --}}
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-14">
         @if (request('search'))
-            <div class=" border border-blue-200 text-gray-600 rounded-lg p-4 flex items-center space-x-2 mt-4 shadow-md">
+            <div class=" border border-lime-100 text-gray-600 rounded-lg p-4 flex items-center space-x-2 mt-4 shadow-md">
                 <!-- Icon Search -->
                 <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                     fill="currentColor">

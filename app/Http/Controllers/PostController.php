@@ -251,6 +251,7 @@ class PostController extends Controller
         $posts = Post::where('author_id', $user->id)->latest()->get();
         $categories = Category::all();
         $users = User::all();
+        
 
         // Kirim data ke view
         return view('user-posts', [
@@ -259,7 +260,7 @@ class PostController extends Controller
             'categories' => $categories,
             'users' => $users
 
-        ]);
+        ], compact('user'));
     }
 
     public function upload(Request $request)
