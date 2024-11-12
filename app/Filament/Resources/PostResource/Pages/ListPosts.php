@@ -8,15 +8,22 @@ use Filament\Resources\Components\Tab;
 use App\Filament\Resources\PostResource;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
+// use App\Filament\Resources\PostResource\Widgets\PostsPerMonth;
 
 class ListPosts extends ListRecords
 {
+    // protected function getFooterWidgets(): array {
+    //     return [
+    //         PostsPerMonth::class,
+    //     ];
+    // }
     protected static string $resource = PostResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->successRedirectUrl('/admin/posts'),
         ];
     }
 

@@ -42,7 +42,7 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     protected static ?string $navigationLabel = 'Posts';
     protected static ?string $slug = 'posts';
@@ -93,12 +93,16 @@ class PostResource extends Resource
                             ->badge(),
                         TextEntry::make('body')
                             ->prose()
-                            ->alignJustify(),
+                            ->alignJustify()
+                            ->extraAttributes([
+                                'style' => 'word-break: break-word; white-space: normal;'
+                        ]),
+
                     ]),
 
                     Section::make([
                         ImageEntry::make('thumbnail')
-                            ->url(fn ($record) => $record->thumbnailUrl) // Menggunakan metode untuk mendapatkan URL
+                            ->getStateUsing(fn(Post $record) => $record->thumbnailUrl)
                             ->width(300)
                             ->height(200),
                         // IconEntry::make('published')
@@ -114,12 +118,17 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                // Tambahkan kolom untuk aksi edit di bagian depan
                 ImageColumn::make('thumbnail')
+                    ->getStateUsing(fn(Post $record) => $record->thumbnailUrl)
                     ->label('Thumbnail'),
                 TextColumn::make('title')->sortable()->searchable(),
                 TextColumn::make('slug')->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('downvotes')
+                    ->getStateUsing(fn(Post $record) => $record->downvotes())
+                    ->label('Downvotes')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('categories')
                     ->label('Categories')
                     ->getStateUsing(function (Post $record) {
