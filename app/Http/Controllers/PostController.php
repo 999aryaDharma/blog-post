@@ -248,7 +248,7 @@ class PostController extends Controller
 
     public function userPosts(User $user)
     {
-        $posts = Post::where('author_id', $user->id)->get();
+        $posts = Post::where('author_id', $user->id)->latest()->get();
         $categories = Category::all();
         $users = User::all();
 

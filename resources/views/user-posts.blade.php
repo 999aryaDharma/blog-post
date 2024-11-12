@@ -3,7 +3,6 @@
     @section('tittle', $title)
 
     {{-- Latest Post (ambil 3) --}}
-    {{-- Latest Post (ambil 3) --}}
     <div class="grid gap-8 grid-cols-1 px-8 py-16 sm:px-8 sm:py-8 md:grid-cols-2 lg:grid-cols-3 lg:px-20">
         @forelse ($posts as $post)
             <article
@@ -110,6 +109,7 @@
     @endauth
 
 </x-layout>
+
 
 <script>
     document.querySelectorAll('[id^=dropdownButton-]').forEach(button => {

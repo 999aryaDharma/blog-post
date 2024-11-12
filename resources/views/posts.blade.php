@@ -59,7 +59,7 @@
 </x-layout>
 
 <!-- Toastr Notifications -->
-<script src="{{ asset('js/toastr-notif.js') }}"></script>
+
 
 
 {{-- dropdwon category --}}
