@@ -122,7 +122,6 @@
                     BlockQuote, // Tambahkan plugin BlockQuote
                     Paragraph,
                     Image,
-                    ImageToolbar,
                     ImageUpload,
                     SimpleUploadAdapter,
                     CodeBlock,
@@ -135,8 +134,8 @@
                     .create(document.querySelector('#editor'), {
                         plugins: [
                             Essentials, Bold, Italic, Font, Paragraph,
-                            Heading, List, Link, BlockQuote, // Tambahkan plugin tambahan
-                            Image, ImageToolbar, ImageUpload, SimpleUploadAdapter, CodeBlock, HorizontalLine,
+                            Heading, List, Link, BlockQuote,
+                            Image, ImageUpload, SimpleUploadAdapter, CodeBlock, HorizontalLine,
                             Alignment, SpecialCharacters
                         ],
                         toolbar: [
@@ -180,6 +179,7 @@
                     })
                     .then(editor => {
                         console.log('Editor berhasil diinisialisasi:', editor);
+                        
                     })
                     .catch(error => {
                         console.error('Terjadi error saat inisialisasi CKEditor:', error);
