@@ -49,8 +49,8 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password"
-                class="block mt-1 w-full border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 shadow-sm hover:shadow-lg transition-shadow duration-300"
+            <x-text-input 
+                class="password block mt-1 w-full border-gray-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 shadow-sm hover:shadow-lg transition-shadow duration-300"
                 type="password" name="password" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />

@@ -16,7 +16,7 @@
     </style>
     </style>
 
-    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased selection:bg-lime-300 selection:text-black">
+    <article class="pb-20 px-4 sm:px-8 lg:px-16 xl:px-80 bg-white antialiased ">
         <div class="flex flex-col lg:flex-row justify-between mx-auto max-w-screen-xl">
             <article class="w-full pr-2 sm:px-6 lg:px-8 mx-auto max-w-5xl format format-sm sm:format-base lg:format-lg">
                 <header class="mb-4 lg:mb-6 not-format">
@@ -117,23 +117,9 @@
 </x-layout>
 
 
-<script>
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-center",
-        "preventDuplicates": true,
-        "onclick": null,
-        "showDuration": "5000",
-        "hideDuration": "5000",
-        "timeOut": "5000",
-        "extendedTimeOut": "3000",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
+    <script src="/resources/js/toastr-notif.js"></script>
 
+    <script>
     function submitVote(post_id, voteType) {
         fetch(`/posts/${post_id}/vote`, {
                 method: 'POST',

@@ -16,71 +16,24 @@
             <p class="text-lg font-semibold">Searching for "<span class="font-bold">{{ request('search') }}</span>"
             </p>
         </div>
+            <div class=" border border-lime-100 text-gray-600 rounded-lg p-4 flex items-center space-x-2 mt-4 shadow-md">
+                <!-- Icon Search -->
+                <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <path
+                        d="M21 21l-4.35-4.35a7.5 7.5 0 10-1.06 1.06L21 21zM10.5 17a6.5 6.5 0 110-13 6.5 6.5 0 010 13z" />
+                </svg>
+                <!-- Text -->
+                <p class="text-lg font-semibold">Searching for "<span class="font-bold">{{ request('search') }}</span>"
+                </p>
+            </div>
         @endif
     </div>
 
 
     <div class="py-2 mx-auto max-w-screen-xl lg:py-10 p-6">
         {{-- Carousel (Featured Post) --}}
-        <div id="controls-carousel" class="relative w-full md:px-10 my-14" data-carousel="static">
-            <div class="absolute flex -translate-y-11 font-semibold font-headline text-xl">Most Popular</div>
-            <!-- Carousel wrapper -->
-            <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-                <!-- Item 1 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img src="/storage/profile_photos/default.jpeg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 1">
-                </div>
-                <!-- Item 2 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                    <img src="/storage/profile_photos/aryaakk.jpg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 2">
-                </div>
-                <!-- Item 3 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img src="/docs/images/carousel/carousel-3.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="Gambar 3">
-                </div>
-                <!-- Item 4 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img src="/docs/images/carousel/carousel-4.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                </div>
-                <!-- Item 5 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <img src="/docs/images/carousel/carousel-5.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                </div>
-            </div>
-            <!-- Slider controls -->
-            <button type="button"
-                class="absolute pl-8 ml-5 top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                data-carousel-prev>
-                <span
-                    class="inline-flex items-center justify-center w-12 h-12 rounded-full  dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60  dark:group-focus:ring-gray-800/70">
-                    <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 1 1 5l4 4" />
-                    </svg>
-                    <span class="sr-only">Previous</span>
-                </span>
-            </button>
-            <button type="button"
-                class="absolute pr-8 mr-5 top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                data-carousel-next>
-                <span
-                    class="inline-flex items-center justify-center w-14 h-14 rounded-full  dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60  dark:group-focus:ring-gray-800/70 ">
-                    <svg class="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 9 4-4-4-4" />
-                    </svg>
-                    <span class="sr-only">Next</span>
-                </span>
-
-            </button>
-        </div>
+        @include('posts.components.popularPost', ['popularPosts' => $popularPosts])
 
         {{-- Latest Post (ambil 3) --}}
         @isset($latestPosts)
@@ -179,6 +132,7 @@
             </div>
             @endforelse
         </div>
+            @include('posts.components.latestPost', ['latestPosts' => $latestPosts])
         @endisset
 
 
@@ -305,6 +259,8 @@
                 </div>
             </div>
         </div>
+        @include('posts.components.regularPost', ['posts' => $posts])
+
     </div>
 
     <!-- Floating action button with better mobile positioning -->

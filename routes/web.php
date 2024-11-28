@@ -12,9 +12,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [PostController::class, 'index'])->name('posts');
 
-Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('single-post', ['title' => $post->title, 'post' => $post]);
-});
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('checkSlug', [PostController::class, 'checkSlug']);
 
@@ -30,10 +28,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/posts/{post}/delete', [PostController::class, 'destroy'])->name('posts.destroy');
 
     Route::get('/my-posts/{user:username}', [PostController::class, 'userPosts'])->name('my-posts');
-
-    Route::get('/posts/{title}', [PostController::class, 'show'])->name('posts.show');
     
     Route::post('/posts/{post}/vote', [VoteController::class, 'vote'])->name('posts.vote');
+
+    Route::post('/upload-image', [PostController::class, 'upload'])->name('ckeditor.upload');
+
     
 
 });

@@ -15,4 +15,13 @@ class Category extends Model
     {
         return $this->belongsToMany(Post::class, 'category_post', 'category_id', 'post_id')->withTimestamps();
     }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 }

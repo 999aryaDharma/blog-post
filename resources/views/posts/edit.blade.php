@@ -102,6 +102,8 @@
                 <button id="dropdownSearchButton"
                     class="inline-flex items-center px-3 py-3 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-black focus:ring-4 focus:outline-none focus:ring-slate-700"
                     type="button" onclick="toggleDropdown()">
+                    class="inline-flex items-center px-3 py-3 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-black focus:ring-4 focus:outline-none focus:ring-slate-700"
+                    type="button" onclick="toggleDropdown()">
                     Select Category(s)
                     <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 10 6">
