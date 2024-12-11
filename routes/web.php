@@ -47,18 +47,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::get('/categories/{category:slug}', function (Category $category) {
-    // Ambil semua post yang terfilter berdasarkan kategori
-    $posts = Post::filter(request(['search']))->whereHas('categories', function ($query) use ($category) {
-        $query->where('slug', $category->slug);
-    })->latest()->take(10)->get();
+Route::get('/categories/{category:slug}', [PostController::class, 'index'])->name('categories.show');
 
-    // Kirim data ke view
-    return view('posts', [
-        'title' => 'Articles in: ' . $category->name,
-        'posts' => $posts,
-    ]);
-})->name('categories.show');
 
 
 Route::get('/authors/{user:username}', function (User $user) {

@@ -75,18 +75,21 @@
                                     to upload</span> or drag and drop</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)
                             </p>
-                            <div class="mt-2 ">
-                                <img id="imagePreview" src="" alt="Image Preview"
-                                    class="hidden w-[70%] max-h-[70%] object-contain absolute inset-0 top-3 bottom-0 left-0 right-0 m-auto" />
-                            </div>
                         </div>
 
                         <input id="thumbnail" type="file" class="hidden" name="thumbnail" accept="image/*"
                             onchange="previewImage(event)" required />
+
+                        <div class="mt-2 ">
+                            <img id="imagePreview" src="" alt="Image Preview"
+                                class="hidden w-[70%] max-h-[70%] object-contain absolute inset-0 top-3 bottom-0 left-0 right-0 m-auto" />
+                        </div>
                     </label>
                 </div>
 
             </div>
+
+
             {{-- Input Categories --}}
             <div class="my-12">
                 <label for="categories" class="block mb-2 text-sm font-medium text-gray-700"></label>

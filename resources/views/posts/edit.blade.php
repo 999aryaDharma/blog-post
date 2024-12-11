@@ -71,7 +71,7 @@
                             </div>
                         </div>
 
-                        <input id="thumbnail" type="file" class="hidden" name="thumbnail" accept="image/*"
+                        <input id="thumbnail" type="file" class="hidden" name="thumbnail" accept="image/*" value="{{ old('thumbnail', $post->thumbnail) }}"
                             onchange="previewImage(event)" required />
                     </label>
                 </div>
@@ -119,7 +119,7 @@
             </div>
 
             {{-- Button Submit --}}
-            <x-primary-button type="submit" class="ml-6 my-6">Create Post</x-primary-button>
+            <x-primary-button type="submit" class="ml-6 my-6">Edit Post</x-primary-button>
         </form>
 
         @push('scripts')
