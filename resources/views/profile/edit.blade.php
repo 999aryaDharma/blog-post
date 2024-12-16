@@ -21,15 +21,6 @@
                         @enderror
                     </div>
 
-                    <div class="mt-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <x-text-input id="email" name="email" type="email" value="{{ old('email', $user->email) }}"
-                            class="mt-1 block w-full disabled:opacity-75" />
-                        @error('email')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
                     <div class="mt-6">
                         <x-primary-button type="submit" class=" text-white px-4 py-2 rounded ml-2">Save</x-primary-button>
                     </div>

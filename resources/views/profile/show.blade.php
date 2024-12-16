@@ -20,9 +20,9 @@
 
         <!-- Edit Profile Link -->
         <div class="mt-6">
-            <a href="{{ route('profile.edit') }}" class="inline-block px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out">
+            <a href="{{ route('profile.edit') }}"><x-primary-button class="rounded hover:bg-gray-700 ml-2 mt-1">
                 Edit Profile
-            </a>
+            </x-primary-button></a>
         </div>
     </div>
 </div>

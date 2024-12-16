@@ -1,4 +1,4 @@
-<div id="default-carousel" class="relative w-full h-full mt-20" data-carousel="slide">
+<div id="default-carousel" class="relative w-full h-full mt-10" data-carousel="slide">
     <!-- Carousel wrapper -->
     <h3 class="text-xl font-semibold mb-4">Most Popular</h3>
     <div class="relative h-96 overflow-hidden rounded-lg md:h-96">

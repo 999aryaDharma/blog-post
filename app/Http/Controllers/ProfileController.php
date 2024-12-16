@@ -35,7 +35,7 @@ class ProfileController extends Controller
 
     $request->validate([
         'name' => 'required|string|max:255',
-        'profile_photo' => 'nullable|image|max:2048', // Validasi untuk file foto
+        'profile_photo' => 'nullable|image', // Validasi untuk file foto
     ]);
 
         // Ambil user yang sedang login
@@ -50,7 +50,7 @@ class ProfileController extends Controller
             $filename = $user->username . '.' . $file->getClientOriginalExtension();
             
             // Simpan file di folder 'profile_photos' di disk 'public' dengan nama sesuai username
-            $path = $file->storeAs('profile_photos', $filename, 'public');
+            $path = $file->storeAs('profile_photo', $filename, 'public');
             
             // Hapus foto lama jika ada
             if ($user->profile_photo) {
@@ -66,7 +66,7 @@ class ProfileController extends Controller
         $user->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->back()->with('status', 'Profile updated successfully!');
+        return redirect()->route('profile.show')->with('status', 'Profile updated successfully!');
 
     }
 

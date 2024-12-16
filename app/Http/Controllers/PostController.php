@@ -86,7 +86,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        
         // Validasi data yang diinput oleh pengguna
         $validatedData = $request->validate([
             'title' => 'required|max:150',
@@ -111,36 +110,45 @@ class PostController extends Controller
             $thumbnailPath = $request->file('thumbnail')->storeAs('images/thumbnails', $thumbnailName, 'public');
             $validatedData['thumbnail'] = $thumbnailPath;
         } else {
-            // Jika tidak ada gambar, set thumbnail ke null (atau bisa juga ke default image)
-            $validatedData['thumbnail'] = null; // Atau Anda bisa mengatur default path
+            // Jika tidak ada gambar, set thumbnail ke null
+            $validatedData['thumbnail'] = null;
         }
 
-        // Buat post baru dengan data yang divalidasi
-        $postId = DB::table('posts')->insertGetId([
-            'title' => $validatedData['title'],
-            'excerpt' => $validatedData['excerpt'],
-            'slug' => $validatedData['slug'],
-            'author_id' => $validatedData['author_id'],
-            'body' => $validatedData['body'],
-            'thumbnail' => $validatedData['thumbnail'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        
-        // Sinkronisasi kategori yang dipilih (menggunakan Query Builder)
-        if (!empty($validatedData['categories'])) {
-            foreach ($validatedData['categories'] as $categoryId) {
-                DB::table('category_post')->insert([
-                    'post_id' => $postId,
-                    'category_id' => $categoryId,
-                ]);
+        // Menangani gambar yang di-upload melalui CKEditor (pastikan data gambar ada dalam body)
+        $bodyContent = $validatedData['body'];
+
+        // Temukan semua tag gambar <img> dalam body content
+        preg_match_all('/<img[^>]+src="([^">]+)"/', $bodyContent, $matches);
+        $imageUrls = $matches[1];
+
+        foreach ($imageUrls as $imageUrl) {
+            // Periksa apakah URL gambar valid (misalnya, gambar diupload melalui CKEditor)
+            if (strpos($imageUrl, 'storage') !== false) {
+                // Simpan gambar ke dalam folder yang sesuai dan perbarui URL
+                $imagePath = Storage::disk('public')->path($imageUrl);
+
+                // Pindahkan atau simpan ulang gambar sesuai kebutuhan
+                $newImagePath = 'images/uploads/' . basename($imagePath);
+                Storage::disk('public')->move($imagePath, $newImagePath);
+
+                // Perbarui URL gambar dalam konten
+                $bodyContent = str_replace($imageUrl, Storage::url($newImagePath), $bodyContent);
             }
         }
-            // dd($validatedData, $request);
+
+        // Update body content dengan gambar yang sudah dipindahkan
+        $validatedData['body'] = $bodyContent;
+
+        // Buat post baru dengan data yang divalidasi
+        $post = Post::create($validatedData);
+
+        // Sinkronisasi kategori yang dipilih
+        $post->categories()->sync($validatedData['categories']);
 
         // Redirect dengan pesan sukses
         return redirect('/')->with('success', 'Post created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -252,9 +260,12 @@ class PostController extends Controller
         return response()->json(['slug' => $slug]);
     }
 
-    public function userPosts(User $user)
+    public function userPosts(User $user, Request $request)
     {
-        $posts = Post::where('author_id', $user->id)->latest()->get();
+        $posts = Post::where('author_id', $user->id)
+            ->filter($request->only(['search', 'category', 'author']))
+            ->latest()
+            ->get();
         $categories = Category::all();
         $users = User::all();
         
